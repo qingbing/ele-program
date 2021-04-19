@@ -1,15 +1,15 @@
 <template>
-  <div>footer</div>
+  <div></div>
 </template>
 
 <script>
 export default {
   data() {
-    return {};
+    return {
+      info: {},
+    };
   },
   components: {},
   methods: {},
 };
 </script>
-
-<style scoped></style>

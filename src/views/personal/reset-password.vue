@@ -1,5 +1,5 @@
 <template>
-  <div>footer</div>
+  <div>change-info</div>
 </template>
 
 <script>
@@ -12,4 +12,5 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

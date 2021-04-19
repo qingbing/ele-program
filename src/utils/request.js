@@ -45,7 +45,6 @@ request.interceptors.request.use(
     if (isUndefined(config.headers[systemHeaderKey])) {
       config.headers[systemHeaderKey] = defaultSystem;
     }
-    console.log(config);
     return config;
   },
   (err) => {

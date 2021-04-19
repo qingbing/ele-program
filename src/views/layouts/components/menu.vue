@@ -53,7 +53,7 @@ export default {
       menus: this.$store.getters.menus,
       isCollapse: this.$store.getters.menuCollapse || false,
       mainNav: {},
-      items: []
+      items: [],
     };
   },
   created() {
@@ -63,10 +63,9 @@ export default {
     onRouteChanged() {
       // 当前路由
       const cPath = this.$route.path;
-      // const cPath = "/goods";
       // 设置主导航选择
       let mainNav = this.menus.find(
-        item =>
+        (item) =>
           isArray(item.allowRoutes) && item.allowRoutes.indexOf(cPath) >= 0
       );
       if (!mainNav) {
@@ -86,12 +85,12 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
-    }
+    },
   },
   watch: {
     // 监测路由变化,只要变化了就调用获取路由参数方法将数据存储本组件即可
-    $route: "onRouteChanged"
-  }
+    $route: "onRouteChanged",
+  },
 };
 </script>
 
