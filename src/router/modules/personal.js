@@ -6,6 +6,10 @@ export default [
   {
     path: "/personal",
     component: Layout,
+    meta: {
+      title: "个人中心",
+      realPath: "/personal/index",
+    },
     children: [
       {
         path: "",
@@ -13,18 +17,24 @@ export default [
       },
       {
         path: "index",
-        name: "个人信息",
         component: () => import("../../views/personal/index.vue"),
+        meta: {
+          title: "个人信息",
+        },
       },
       {
         path: "change-info",
-        name: "修改信息",
         component: () => import("../../views/personal/change-info.vue"),
+        meta: {
+          title: "修改信息",
+        },
       },
       {
         path: "reset-password",
-        name: "重置密码",
         component: () => import("../../views/personal/reset-password.vue"),
+        meta: {
+          title: "重置密码",
+        },
       },
     ],
   },
