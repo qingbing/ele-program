@@ -3,7 +3,7 @@
     <h2 class="login-title">小Z后台管理</h2>
     <el-form
       class="login-form"
-      ref="from"
+      ref="form"
       :model="formData"
       :rules="rules"
       label-width="100px"
@@ -16,8 +16,12 @@
       ></element-form>
 
       <el-form-item>
-        <el-button type="warning" @click="handleSubmit">登录</el-button>
-        <el-button type="default" @click="handleReset">重置</el-button>
+        <component-buttons
+          refForm="form"
+          :buttons="buttons"
+          :submitLabel="submitLabel"
+          :submitCallback="submitCallback"
+        ></component-buttons>
       </el-form-item>
     </el-form>
   </div>
@@ -60,6 +64,8 @@ export default {
     };
 
     return {
+      buttons: ["submit", "reset"],
+      submitLabel: "提交",
       rules: {},
       formData,
       items,
@@ -71,6 +77,9 @@ export default {
         this.items.type.exts.options = res.data;
       })
       .catch((err) => err);
+  },
+  components: {
+    componentButtons: () => import("./../../components/formButton"),
   },
   watch: {
     $route: {
@@ -94,14 +103,7 @@ export default {
         return acc;
       }, {});
     },
-    handleSubmit() {
-      if (this.loading) {
-        return this.$message({
-          message: "表单提交中，请勿重复提交",
-          type: "warning",
-        });
-      }
-      this.loading = true;
+    submitCallback(cb) {
       // 登录
       this.$store
         .dispatch("user/login", this.formData)
@@ -111,12 +113,9 @@ export default {
             path: this.redirect || "/",
             query: this.otherQuery,
           });
+          cb();
         })
-        .catch((err) => err);
-      this.loading = false;
-    },
-    handleReset() {
-      this.$refs["from"].resetFields();
+        .catch(() => cb());
     },
   },
 };
