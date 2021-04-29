@@ -41,3 +41,14 @@ export function login(data) {
     data,
   });
 }
+
+/**
+ * 账户退出登录
+ */
+export function logout() {
+  return request({
+    headers,
+    url: "/login/sign-out",
+    method: "post",
+  });
+}

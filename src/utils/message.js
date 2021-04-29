@@ -1,6 +1,6 @@
 // 导入
 import { Message } from "element-ui";
-import { isEmpty, isObject } from "@qingbing/helper";
+import { isEmpty, isObject, isUndefined } from "@qingbing/helper";
 
 /**
  * 统一提示信息
@@ -8,6 +8,7 @@ import { isEmpty, isObject } from "@qingbing/helper";
  * @param {object} options 提示选项
  */
 function output(options) {
+  isUndefined(options.duration) && (options.duration = 2000);
   Message(options);
 }
 

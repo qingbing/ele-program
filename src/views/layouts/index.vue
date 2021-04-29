@@ -7,7 +7,7 @@
       <app-menu></app-menu>
       <el-main>
         <app-breadcrumb v-show="true"></app-breadcrumb>
-        <router-view></router-view>
+        <div class="main-content"><router-view></router-view></div>
       </el-main>
     </el-container>
     <el-footer>
@@ -25,9 +25,9 @@ export default {
     appHeader: () => import("./components/header"),
     appBreadcrumb: () => import("./components/breadcrumb"),
     appMenu: () => import("./components/menu"),
-    appFooter: () => import("./components/footer")
+    appFooter: () => import("./components/footer"),
   },
-  methods: {}
+  methods: {},
 };
 </script>
 
@@ -72,7 +72,12 @@ $white: #ffffff;
   padding: 0 10px;
   height: 100%;
 }
-#app .el-form-item .el-form-item__content{
+#app .el-form-item .el-form-item__content {
   text-align: left;
+}
+.main-content {
+  margin: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 </style>

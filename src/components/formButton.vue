@@ -70,20 +70,6 @@ export default {
     },
   },
   data() {
-    // 获取操作的表单
-    let vmForm;
-    let $vm = this;
-    do {
-      if ($vm.$refs[this.refForm]) {
-        vmForm = $vm;
-        break;
-      }
-      $vm = $vm.$parent;
-    } while ($vm);
-    if (!vmForm) {
-      dump.error(`buttons 组件中 ${this.refForm} 未找到`);
-    }
-
     each(this.buttons, (item, idx) => {
       if ("submit" == item) {
         this.buttons[idx] = {
@@ -109,10 +95,29 @@ export default {
     });
     return {
       submitLoading: false,
-      vmForm,
+      vmForm: undefined,
     };
   },
   methods: {
+    // 获取操作表单
+    getVmForm() {
+      if (isUndefined(this.vmForm)) {
+        let vmForm;
+        let $vm = this;
+        do {
+          if ($vm.$refs[this.refForm]) {
+            vmForm = $vm;
+            break;
+          }
+          $vm = $vm.$parent;
+        } while ($vm);
+        if (!vmForm) {
+          dump.error(`buttons 组件中 ${this.refForm} 未找到`);
+        }
+        this.vmForm = vmForm;
+      }
+      return this.vmForm;
+    },
     /**
      * 提交按钮句柄
      */
@@ -125,7 +130,7 @@ export default {
       }
       this.submitLoading = true;
       if (isFunction(this.submitCallback)) {
-        this.submitCallback.call(this.vmForm, () => {
+        this.submitCallback.call(this.getVmForm(), () => {
           this.submitLoading = false;
         });
       } else {
@@ -137,6 +142,7 @@ export default {
      * 重置按钮句柄
      */
     resetHandle() {
+      this.submitLoading = false;
       if (isFunction(this.resetCallback)) {
         return this.resetCallback.call(this.vmForm, this);
       }

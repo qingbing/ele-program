@@ -28,3 +28,27 @@ export function getMenus() {
     method: "post",
   });
 }
+
+/**
+ * 修改个人信息
+ */
+export function changeInfo(data) {
+  return request({
+    headers,
+    url: "/personal/default/change-info",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 重置密码
+ */
+export function resetPassword(data) {
+  return request({
+    headers,
+    url: "/personal/default/reset-password",
+    method: "post",
+    data,
+  });
+}

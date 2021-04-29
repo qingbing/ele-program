@@ -17,6 +17,13 @@ export function setLoginFlag() {
 }
 
 /**
+ * 清除登录标记
+ */
+export function removeLoginFlag() {
+  cookie.remove(checkKey);
+}
+
+/**
  * 检查是否登录
  * @returns {boolean}
  */

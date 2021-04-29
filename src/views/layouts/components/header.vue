@@ -62,6 +62,7 @@
 // 引入包
 import superPub from "./../../../api/super/pub";
 import { isArray } from "@qingbing/helper";
+import { success, warning } from "./../../../utils/message";
 
 export default {
   data() {
@@ -112,7 +113,7 @@ export default {
           superPub
             .clearCache()
             .then((res) => {
-              this.$message.success(res.msg);
+              success(res.msg);
             })
             .catch((err) => err);
           break;
@@ -125,12 +126,11 @@ export default {
       this.$store
         .dispatch("user/logout")
         .then(async () => {
+          success("成功退出系统");
           this.$router.push("/login");
         })
         .catch((err) => {
-          this.$message({
-            type: "warning",
-            message: err.message,
+          warning(err.message, {
             duration: 500, //停留时间
           });
         });

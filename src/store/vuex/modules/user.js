@@ -1,6 +1,6 @@
 // 引入包
-import { setLoginFlag } from "./../../../auth";
-import { login } from "./../../../api/login";
+import { setLoginFlag, removeLoginFlag } from "./../../../auth";
+import { login, logout } from "./../../../api/login";
 import { getInfo, getMenus } from "./../../../api/personal/default";
 import { isArray, merge } from "@qingbing/helper";
 
@@ -93,6 +93,21 @@ const actions = {
           commit("SET_ALLOW_ROUTES", allowRoutes);
           // 返回信息
           resolve(res.data);
+        })
+        .catch((err) => reject(err));
+    });
+  },
+  logout({ commit }) {
+    return new Promise((resolve, reject) => {
+      logout()
+        .then((res) => {
+          // 清除登录标记
+          removeLoginFlag();
+          // 重置其它用户消息
+          commit("SET_INFO", null);
+          commit("SET_MENUS", []);
+          commit("SET_ALLOW_ROUTES", []);
+          resolve(res);
         })
         .catch((err) => reject(err));
     });

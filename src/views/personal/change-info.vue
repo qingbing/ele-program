@@ -79,7 +79,6 @@ export default {
     handleSubmit(cb) {
       changeInfo(this.formData)
         .then((res) => {
-          console.log(res);
           success(res.msg);
           cb();
         })

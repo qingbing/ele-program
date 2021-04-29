@@ -30,6 +30,7 @@
 <script>
 // 导入包
 import { getSupportTypes } from "./../../api/login";
+import { success } from "./../../utils/message";
 
 // 导出
 export default {
@@ -60,7 +61,7 @@ export default {
     const formData = {
       type: "email",
       account: "top-world@qq.com",
-      password: "111111",
+      password: "CDxx111111",
     };
 
     return {
@@ -108,6 +109,7 @@ export default {
       this.$store
         .dispatch("user/login", this.formData)
         .then(() => {
+          success("登录成功");
           // 登录成功，跳转到refer路由或首页
           this.$router.push({
             path: this.redirect || "/",
