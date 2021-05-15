@@ -15,7 +15,7 @@ function clearCache() {
   return request({
     headers,
     method: "post",
-    url: "/super/pub/clear-cache",
+    url: "/super/default/clear-cache",
   });
 }
 
