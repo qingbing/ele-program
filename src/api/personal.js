@@ -1,6 +1,6 @@
 // 导入axios请求模块
-import request from "./../../utils/request";
-import CONF from "./../../conf/constant";
+import request from "./../utils/request";
+import CONF from "./../conf/constant";
 
 // 定义使用后端系统
 const headers = {
@@ -13,7 +13,7 @@ const headers = {
 export function getInfo() {
   return request({
     headers,
-    url: "/personal/default/info",
+    url: "/personal/info",
     method: "post",
   });
 }
@@ -24,7 +24,7 @@ export function getInfo() {
 export function getMenus() {
   return request({
     headers,
-    url: "/personal/default/menus",
+    url: "/personal/menus",
     method: "post",
   });
 }
@@ -35,7 +35,7 @@ export function getMenus() {
 export function changeInfo(data) {
   return request({
     headers,
-    url: "/personal/default/change-info",
+    url: "/personal/change-info",
     method: "post",
     data,
   });
@@ -47,7 +47,7 @@ export function changeInfo(data) {
 export function resetPassword(data) {
   return request({
     headers,
-    url: "/personal/default/reset-password",
+    url: "/personal/reset-password",
     method: "post",
     data,
   });

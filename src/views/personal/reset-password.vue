@@ -29,7 +29,7 @@
 
 <script>
 // 导入
-import { resetPassword } from "./../../api/personal/default";
+import { resetPassword } from "../../api/personal";
 import { success, warning } from "../../utils/message";
 import { col_cloumn } from "@qingbing/helper";
 

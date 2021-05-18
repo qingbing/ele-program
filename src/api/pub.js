@@ -1,6 +1,6 @@
 // 导入axios请求模块
-import request from "./../../utils/request";
-import CONF from "./../../conf/constant";
+import request from "./../utils/request";
+import CONF from "./../conf/constant";
 
 // 定义使用后端系统
 const headers = {
@@ -15,7 +15,7 @@ function clearCache() {
   return request({
     headers,
     method: "post",
-    url: "/super/default/clear-cache",
+    url: "/pub/clear-cache",
   });
 }
 

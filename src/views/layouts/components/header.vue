@@ -60,7 +60,7 @@
 
 <script>
 // 引入包
-import superPub from "./../../../api/super/pub";
+import pub from "./../../../api/pub";
 import { isArray } from "@qingbing/helper";
 import { success, warning } from "./../../../utils/message";
 
@@ -110,7 +110,7 @@ export default {
           break;
         case "clearCache":
           this.shortIndex = null;
-          superPub
+          pub
             .clearCache()
             .then((res) => {
               success(res.msg);
