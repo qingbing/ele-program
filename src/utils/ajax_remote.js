@@ -21,9 +21,9 @@ export default async function (url, params, method, callback) {
   if (isFunction(callback)) {
     return request(req)
       .then((res) => {
-        callback(res.res);
+        callback(res.data);
       })
       .catch((err) => err);
   }
-  return (await request(req)).res;
+  return (await request(req)).data;
 }
