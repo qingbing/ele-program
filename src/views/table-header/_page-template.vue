@@ -104,6 +104,7 @@ export default {
   },
   data() {
     return {
+      operType: "add",
       query: {
         key: "",
         name: "",
@@ -195,7 +196,12 @@ export default {
         }
       );
     },
+    // 判断是否添加操作
+    isAdd() {
+      return "add" === this.operType;
+    },
     buttonAdd() {
+      this.operType = "add";
       // 设置 operDailog 表单数据
       this.operDailog.entity = copy(this.operDailog.defaultEntity);
       this.operDailog.title = "添加表头";
@@ -203,6 +209,7 @@ export default {
       this.openDialog("operDailog");
     },
     buttonEdit(entity) {
+      this.operType = "edit";
       // 设置 operDailog 表单数据
       this.operDailog.entity = copy(entity);
       this.operDailog.title = "编辑表头";
@@ -210,21 +217,23 @@ export default {
       this.openDialog("operDailog");
     },
     buttonView(entity) {
+      this.operType = "view";
       // 设置 operDailog 表单数据
       this.viewDailog.entity = copy(entity);
       // 打开 dailog
       this.openDialog("viewDailog");
+    },
+    // 关闭 dailog
+    handleCancel() {
+      this.operType = "";
+      // 关闭 dailog
+      this.closeDialog();
     },
     handleDelete(entity, successCb, failureCb) {
       console.log(entity);
       console.log(this);
       // successCb();
       failureCb();
-    },
-    // 关闭 dailog
-    handleCancel() {
-      // 关闭 dailog
-      this.closeDialog();
     },
     // 保存数据,cb() 终止提交提示
     handleSave(cb) {
