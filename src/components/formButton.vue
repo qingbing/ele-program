@@ -1,5 +1,5 @@
 <template>
-  <el-form-item>
+  <div>
     <el-button
       v-for="(item, idx) in buttons"
       :type="item.type"
@@ -7,7 +7,7 @@
       :key="uniqid + '_' + idx"
       >{{ item.label }}</el-button
     >
-  </el-form-item>
+  </div>
 </template>
 
 <script>
@@ -49,9 +49,23 @@ export default {
     },
     submitLabel: {
       type: String,
-      default: "提交",
+      default: "确认",
     },
     submitCallback: {
+      type: Function,
+    },
+    /**
+     * 提交按钮配置
+     */
+    cancelType: {
+      type: String,
+      default: "default",
+    },
+    cancelLabel: {
+      type: String,
+      default: "取消",
+    },
+    cancelCallback: {
       type: Function,
     },
     /**
@@ -83,6 +97,12 @@ export default {
           label: this.resetLabel,
           handle: this.resetHandle,
         };
+      } else if ("cancel" == item) {
+        this.buttons[idx] = {
+          type: this.cancelType,
+          label: this.cancelLabel,
+          handle: this.cancelHandle,
+        };
       } else if (!isObject(item)) {
         dump.error("组件 formButton 参数必须是JsonObject");
       } else if (isUndefined(item.label)) {
@@ -95,28 +115,28 @@ export default {
     });
     return {
       submitLoading: false,
-      vmForm: undefined,
+      formParent: undefined,
     };
   },
   methods: {
     // 获取操作表单
-    getVmForm() {
-      if (isUndefined(this.vmForm)) {
-        let vmForm;
+    getFormParent() {
+      if (isUndefined(this.formParent)) {
+        let formParent;
         let $vm = this;
         do {
           if ($vm.$refs[this.refForm]) {
-            vmForm = $vm;
+            formParent = $vm;
             break;
           }
           $vm = $vm.$parent;
         } while ($vm);
-        if (!vmForm) {
+        if (!formParent) {
           dump.error(`buttons 组件中 ${this.refForm} 未找到`);
         }
-        this.vmForm = vmForm;
+        this.formParent = formParent;
       }
-      return this.vmForm;
+      return this.formParent;
     },
     /**
      * 提交按钮句柄
@@ -129,13 +149,34 @@ export default {
         });
       }
       this.submitLoading = true;
-      if (isFunction(this.submitCallback)) {
-        this.submitCallback.call(this.getVmForm(), () => {
-          this.submitLoading = false;
+      if (
+        isFunction(this.submitCallback) &&
+        this.getFormParent().$refs[this.refForm]
+      ) {
+        this.getFormParent().$refs[this.refForm].validate((valid) => {
+          if (!valid) {
+            this.submitLoading = false;
+            return;
+          }
+          this.submitCallback.call(this.getFormParent(), () => {
+            this.submitLoading = false;
+          });
         });
       } else {
         // 后台数据处理
         this.submitLoading = false;
+      }
+    },
+    /**
+     * 取消按钮句柄
+     */
+    cancelHandle() {
+      this.submitLoading = false;
+      if (this.getFormParent().$refs[this.refForm]) {
+        this.getFormParent().$refs[this.refForm].resetFields();
+      }
+      if (isFunction(this.cancelCallback)) {
+        return this.cancelCallback.call(this.getFormParent(), this);
       }
     },
     /**
@@ -144,9 +185,9 @@ export default {
     resetHandle() {
       this.submitLoading = false;
       if (isFunction(this.resetCallback)) {
-        return this.resetCallback.call(this.vmForm, this);
+        return this.resetCallback.call(this.getFormParent(), this);
       }
-      this.vmForm.$refs[this.refForm].resetFields();
+      this.getFormParent().$refs[this.refForm].resetFields();
     },
     /**
      * 普通按钮句柄
@@ -154,7 +195,7 @@ export default {
     commonHandle(_, idx) {
       const buttonItem = this.buttons[idx];
       if (isFunction(buttonItem.callback)) {
-        return buttonItem.callback.call(this.vmForm);
+        return buttonItem.callback.call(this.getFormParent());
       }
     },
   },
