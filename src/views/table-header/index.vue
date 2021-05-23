@@ -1,8 +1,9 @@
 <script>
 // 导入包
 import ECuri from "@/extends/curi.vue";
-import { copy, merge } from "@qingbing/helper";
+import { merge, col_value } from "@qingbing/helper";
 import items from "./../json/header";
+import Labels from "@/conf/labels";
 
 // 导入包
 export default {
@@ -55,21 +56,27 @@ export default {
     };
   },
   methods: {
+    // 列数据渲染前可修改列数据
+    beforeRender(item) {
+      item.is_open_label = col_value(item.is_open, Labels.yesNo);
+    },
     getHeaders(cb) {
       cb([
-        { name: "_idx", label: "序号", fixed: "left" },
-        { name: "date", label: "日期", width: "100", default: "0000-00-00" },
-        { name: "name", label: "姓名", width: "150" },
-        { name: "age", label: "年龄", width: "50" },
-        { name: "sex", label: "性别", width: "50", align: "left" },
+        { name: "_idx", label: "序号", fixed: "left", width: "50" },
+        { name: "key", label: "表头标识", align: "left", width: "100" },
+        { name: "name", label: "表头名称", align: "left", width: "150" },
+        { name: "is_open_label", label: "是否公开", width: "80" },
         {
           name: "operate",
           label: "操作",
           component: "operate",
+          align: "left",
           params: {
-            buttonEdit: this.buttonEdit,
-            buttonView: this.buttonView,
-            handleDelete: this.handleDelete,
+            buttons: [
+              { operType: "view", handle: this.buttonView },
+              { operType: "edit", handle: this.buttonEdit },
+              { operType: "delete", handle: this.handleDelete },
+            ],
           },
         },
       ]);
@@ -84,9 +91,11 @@ export default {
         }
       );
     },
-    handleDelete(entity) {
+    handleDelete(entity, successCb, failureCb) {
       console.log(entity);
       console.log(this);
+      // successCb();
+      failureCb();
     },
     // 保存数据,cb() 终止提交提示
     handleSave(cb) {

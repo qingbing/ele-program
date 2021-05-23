@@ -176,9 +176,11 @@ export default {
           label: "操作",
           component: "operate",
           params: {
-            buttonEdit: this.buttonEdit,
-            buttonView: this.buttonView,
-            handleDelete: this.handleDelete,
+            buttons: [
+              { operType: "view", handle: this.buttonView },
+              { operType: "edit", handle: this.buttonEdit },
+              { operType: "delete", handle: this.handleDelete },
+            ],
           },
         },
       ]);
@@ -213,9 +215,11 @@ export default {
       // 打开 dailog
       this.openDialog("viewDailog");
     },
-    handleDelete(entity) {
+    handleDelete(entity, successCb, failureCb) {
       console.log(entity);
       console.log(this);
+      // successCb();
+      failureCb();
     },
     // 关闭 dailog
     handleCancel() {
