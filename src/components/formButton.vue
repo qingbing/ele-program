@@ -15,6 +15,7 @@
 import {
   each,
   isUndefined,
+  isEmpty,
   isObject,
   isFunction,
   dump,
@@ -158,9 +159,18 @@ export default {
             this.submitLoading = false;
             return;
           }
-          this.submitCallback.call(this.getFormParent(), () => {
-            this.submitLoading = false;
-          });
+          this.submitCallback.call(
+            this.getFormParent(),
+            (message) => {
+              this.submitLoading = false;
+              if (!isEmpty(message)) {
+                this.$message({ type: "success", message });
+              }
+            },
+            () => {
+              this.submitLoading = false;
+            }
+          );
         });
       } else {
         // 后台数据处理

@@ -131,12 +131,7 @@ export default {
               }
               this.$message({ type: "success", message });
             },
-            (message) => {
-              if (isEmpty(message)) {
-                message = this.operFailureTip;
-              }
-              this.$message({ type: "error", message });
-            }
+            () => {}
           );
         })
         .catch(() => {});

@@ -2,12 +2,6 @@
 import Axios from "axios";
 import { Loading, Message } from "element-ui";
 import { parseResult } from "./response";
-import CONF from "./../conf/constant";
-import { isUndefined } from "@qingbing/helper";
-
-// 后端系统别名
-const defaultSystem = CONF.defaultSystem;
-const systemHeaderKey = CONF.systemHeaderKey;
 
 // 定义加载提示
 const loading = {
@@ -42,9 +36,6 @@ const request = Axios.create({
 request.interceptors.request.use(
   (config) => {
     loading.create();
-    if (isUndefined(config.headers[systemHeaderKey])) {
-      config.headers[systemHeaderKey] = defaultSystem;
-    }
     return config;
   },
   (err) => {
