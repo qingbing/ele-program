@@ -4,6 +4,8 @@ import ECuri from "@/extends/curi.vue";
 import { merge, col_value } from "@qingbing/helper";
 import items from "./../json/header";
 import Labels from "@/conf/labels";
+import { headerList, headerAdd, headerEdit, headerDel } from "@/api/header";
+import Router from "@/utils/router-helper";
 
 // 导入包
 export default {
@@ -76,31 +78,47 @@ export default {
               { operType: "view", handle: this.buttonView },
               { operType: "edit", handle: this.buttonEdit },
               { operType: "delete", handle: this.handleDelete },
+              { label: "子选项", handle: this.buttonOptions },
             ],
           },
         },
       ]);
     },
     getData(cb) {
-      this.ajaxMethod(
-        "/header/list",
-        merge(this.query, this.pagination),
-        "post",
-        (res) => {
-          cb(res);
-        }
-      );
+      headerList(merge(this.query, this.pagination))
+        .then((res) => cb(res.data))
+        .catch(() => {});
     },
     handleDelete(entity, successCb, failureCb) {
-      console.log(entity);
-      console.log(this);
-      // successCb();
-      failureCb();
+      headerDel(entity)
+        .then((res) => {
+          successCb(res.message);
+          // 添加成功，刷新列表
+          this.$refs["pageTable"].refreshTable();
+        })
+        .catch((res) => failureCb(res));
     },
     // 保存数据,cb() 终止提交提示
-    handleSave(cb) {
-      console.log(this.operDailog.entity);
-      cb();
+    handleSave(successCb, failureCb) {
+      let promise;
+      if (this.isAdd()) {
+        promise = headerAdd(this.operDailog.entity);
+      } else {
+        promise = headerEdit(this.operDailog.entity);
+      }
+      promise
+        .then((res) => {
+          successCb(res.message);
+          // 关闭 dailog
+          this.closeDialog();
+          // 添加成功，刷新列表
+          this.$refs["pageTable"].refreshTable();
+        })
+        .catch((res) => failureCb(res.message));
+    },
+    // 打开新窗口，管理表头选项
+    buttonOptions(entity) {
+      Router.open(this, `/table-header/options/${entity.key}`, true);
     },
   },
 };

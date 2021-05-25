@@ -62,3 +62,31 @@ export function headerDel(data) {
     data,
   });
 }
+
+/**
+ * 表头详情
+ * @param {Object} data 参数
+ * @returns
+ */
+export function headerView(data) {
+  return request({
+    headers,
+    url: "/header/view",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 表头详情
+ * @param {Object} data 参数
+ * @returns
+ */
+export function optionList(data) {
+  return request({
+    headers,
+    url: "/header-option/list",
+    method: "post",
+    data,
+  });
+}
