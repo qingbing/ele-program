@@ -90,3 +90,17 @@ export function optionList(data) {
     data,
   });
 }
+
+/**
+ * 表头详情
+ * @param {Object} data 参数
+ * @returns
+ */
+export function optionRefresh(data) {
+  return request({
+    headers,
+    url: "/header-option/refresh-order",
+    method: "post",
+    data,
+  });
+}
