@@ -235,7 +235,7 @@ export default {
       // successCb();
       failureCb();
     },
-    // 保存数据,cb() 终止提交提示
+    // 保存数据,回调函数终止提交标记
     handleSave(cb) {
       console.log(this.operDailog.entity);
       cb();

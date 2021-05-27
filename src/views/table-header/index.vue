@@ -1,10 +1,10 @@
 <script>
 // 导入包
 import ECuri from "@/extends/curi.vue";
-import { merge, col_value } from "@qingbing/helper";
+import { merge, copy } from "@qingbing/helper";
 import items from "./../json/header";
 import Labels from "@/conf/labels";
-import { headerList, headerAdd, headerEdit, headerDel } from "@/api/header";
+import ReqHeader from "@/api/header";
 import Router from "@/utils/router-helper";
 
 // 导入包
@@ -15,6 +15,13 @@ export default {
     operate: () => import("@/components/operate"),
   },
   data() {
+    const defaultEntity = {
+      key: "",
+      name: "",
+      is_open: 0,
+      sort_order: "0",
+      description: "",
+    };
     return {
       addButtonText: "添加表头",
       query: {
@@ -35,39 +42,28 @@ export default {
       },
       operDailog: {
         items: items.header,
-        defaultEntity: {
-          key: "",
-          name: "",
-          is_open: 0,
-          sort_order: "023",
-          description: "",
-        },
+        defaultEntity: copy(defaultEntity),
       },
       viewDailog: {
         title: "查看表头",
         items: items.header,
         buttons: ["cancel"],
-        defaultEntity: {
-          key: "",
-          name: "",
-          is_open: 0,
-          sort_order: "023",
-          description: "",
-        },
+        defaultEntity: copy(defaultEntity),
       },
     };
   },
   methods: {
-    // 列数据渲染前可修改列数据
-    beforeRender(item) {
-      item.is_open_label = col_value(item.is_open, Labels.yesNo);
-    },
     getHeaders(cb) {
       cb([
         { name: "_idx", label: "序号", fixed: "left", width: "50" },
         { name: "key", label: "表头标识", align: "left", width: "100" },
         { name: "name", label: "表头名称", align: "left", width: "150" },
-        { name: "is_open_label", label: "是否公开", width: "80" },
+        {
+          name: "is_open",
+          label: "是否公开",
+          width: "80",
+          options: Labels.yesNo,
+        },
         {
           name: "operate",
           label: "操作",
@@ -85,33 +81,33 @@ export default {
       ]);
     },
     getData(cb) {
-      headerList(merge(this.query, this.pagination))
+      ReqHeader.headerList(merge(this.query, this.pagination))
         .then((res) => cb(res.data))
         .catch(() => {});
     },
     handleDelete(entity, successCb, failureCb) {
-      headerDel(entity)
+      ReqHeader.headerDel(entity)
         .then((res) => {
           successCb(res.message);
-          // 添加成功，刷新列表
+          // 刷新列表
           this.$refs["pageTable"].refreshTable();
         })
         .catch((res) => failureCb(res));
     },
-    // 保存数据,cb() 终止提交提示
+    // 保存数据,回调函数终止提交标记
     handleSave(successCb, failureCb) {
       let promise;
       if (this.isAdd()) {
-        promise = headerAdd(this.operDailog.entity);
+        promise = ReqHeader.headerAdd(this.operDailog.entity);
       } else {
-        promise = headerEdit(this.operDailog.entity);
+        promise = ReqHeader.headerEdit(this.operDailog.entity);
       }
       promise
         .then((res) => {
           successCb(res.message);
           // 关闭 dailog
           this.closeDialog();
-          // 添加成功，刷新列表
+          // 刷新列表
           this.$refs["pageTable"].refreshTable();
         })
         .catch((res) => failureCb(res.message));

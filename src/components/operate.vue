@@ -113,7 +113,16 @@ export default {
       if (button.isDelete) {
         this.handDelete(button);
       } else {
-        button.handle(this.row);
+        button.handle(
+          this.row,
+          (message) => {
+            if (isEmpty(message)) {
+              message = this.operSuccessTip;
+            }
+            this.$message({ type: "success", message });
+          },
+          () => {}
+        );
       }
     },
     handDelete(buttonConf) {

@@ -15,6 +15,9 @@ export default {
       window.open(href);
     }
   },
+  /**
+   * 关闭窗口
+   */
   closeWin() {
     if (navigator.userAgent.indexOf("MSIE") > 0) {
       // close IE
