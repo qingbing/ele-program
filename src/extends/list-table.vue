@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h3 v-if="pageTitle">{{ pageTitle }}</h3>
     <!-- query from -->
     <el-form
       :inline="true"
@@ -21,6 +22,7 @@
       :getTableData="getData"
       :beforeRender="beforeRender"
       :pagination="pagination"
+      :editConfig="tableEditConfig"
       ref="pageTable"
     ></c-table>
     <!-- add -->
@@ -135,6 +137,12 @@ export default {
   extends: EBase,
   data() {
     return {
+      pageTitle: "",
+      // 配置表格编辑
+      tableEditConfig: {
+        editable: false,
+        saveHandle: this.cellSave,
+      },
       // 查询栏目配置
       query: {
         search: {}, // 默认参数
@@ -199,6 +207,7 @@ export default {
     CButtons: () => import("@/components/formButton"),
   },
   methods: {
+    // 添加按钮文字
     getAddButtonText() {
       return "添加";
     },
@@ -233,6 +242,23 @@ export default {
     handleCancel() {
       // 关闭 dailog
       this.closeDialog();
+    },
+    // 添加或修改的最终提交
+    addOrEditSave(promise, successCb, failureCb) {
+      promise
+        .then((res) => {
+          successCb(res.message);
+          // 关闭 dailog
+          this.closeDialog();
+          // 刷新列表
+          this.$refs["pageTable"].refreshTable();
+        })
+        .catch((res) => failureCb(res.message));
+    },
+    ////////////////////////////////////////////
+    // 保存单元格
+    cellSave(cb, change, properties, params) {
+      console.log("cell-save", cb, change, properties, params);
     },
     // 添加保存
     handleAdd(successCb, failureCb) {

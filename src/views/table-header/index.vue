@@ -109,24 +109,12 @@ export default {
     // 保存数据,回调函数终止提交标记
     handleAdd(successCb, failureCb) {
       const promise = ReqHeader.headerAdd(this.addDailog.entity);
-      this._handleSave(promise, successCb, failureCb);
+      this.addOrEditSave(promise, successCb, failureCb);
     },
     // 保存数据,回调函数终止提交标记
     handleEdit(successCb, failureCb) {
       const promise = ReqHeader.headerEdit(this.editDailog.entity);
-      this._handleSave(promise, successCb, failureCb);
-    },
-    // 保存数据,回调函数终止提交标记
-    _handleSave(promise, successCb, failureCb) {
-      promise
-        .then((res) => {
-          successCb(res.message);
-          // 关闭 dailog
-          this.closeDialog();
-          // 刷新列表
-          this.$refs["pageTable"].refreshTable();
-        })
-        .catch((res) => failureCb(res.message));
+      this.addOrEditSave(promise, successCb, failureCb);
     },
     // 打开新窗口，管理表头选项
     buttonOptions(entity) {
