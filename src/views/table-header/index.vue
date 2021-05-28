@@ -102,7 +102,7 @@ export default {
         .then((res) => {
           successCb(res.message);
           // 刷新列表
-          this.$refs["pageTable"].refreshTable();
+          this.reloadTable();
         })
         .catch((res) => failureCb(res));
     },

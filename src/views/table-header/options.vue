@@ -55,6 +55,16 @@ export default {
             type: "warning",
             callback: this.buttonAdd,
           },
+          {
+            label: "刷新排序",
+            type: "primary",
+            callback: this.buttonRefresh,
+          },
+          {
+            label: "关闭页面",
+            type: "danger",
+            callback: this.buttonCloseWindow,
+          },
         ],
       },
       addDailog: {
@@ -132,6 +142,9 @@ export default {
     // 添加按钮文字
     getAddButtonText() {
       return "添加表头选项";
+    },
+    reloadTable() {
+      window.location.reload();
     },
     init(headerKey) {
       if (isEmpty(headerKey)) {
@@ -287,7 +300,7 @@ export default {
       ReqHeader.optionRefresh({ header_key: this.header.key })
         .then(() => {
           // 刷新表格
-          Helper.reloadTable(this, "pageTable");
+          this.reloadTable();
         })
         .catch((err) => err);
     },
@@ -337,7 +350,7 @@ export default {
         .then((res) => {
           successCb(res.message);
           // 刷新列表
-          this.$refs["pageTable"].refreshTable();
+          this.reloadTable();
         })
         .catch((res) => failureCb(res));
     },
@@ -347,7 +360,7 @@ export default {
         .then((res) => {
           successCb(res.message);
           // 刷新列表
-          this.$refs["pageTable"].refreshTable();
+          this.reloadTable();
         })
         .catch((res) => failureCb(res));
     },
@@ -357,7 +370,7 @@ export default {
         .then((res) => {
           successCb(res.message);
           // 刷新列表
-          this.$refs["pageTable"].refreshTable();
+          this.reloadTable();
         })
         .catch((res) => failureCb(res));
     },
@@ -366,7 +379,7 @@ export default {
     $route: function (to, from) {
       if (to.params.key != from.params.key) {
         this.init(to.params.key); // 重新初始化数据
-        this.$refs["pageTable"].refreshTable();
+        this.reloadTable();
       }
     },
   },

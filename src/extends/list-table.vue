@@ -131,6 +131,7 @@
 // 导入包
 import EBase from "./base";
 import { copy } from "@qingbing/helper";
+import Helper from "@/utils/helper";
 
 // 导入包
 export default {
@@ -213,9 +214,14 @@ export default {
     },
     // 列数据渲染前可修改列数据
     beforeRender(item, idx) {},
+    // 重新加载表格
+    reloadTable() {
+      Helper.reloadTable(this, "pageTable");
+      // this.$refs["pageTable"].refreshTable();
+    },
     // 页面查询按钮
     buttonQuery() {
-      this.$refs["pageTable"].refreshTable();
+      this.reloadTable();
     },
     // 添加按钮
     buttonAdd() {
@@ -251,7 +257,7 @@ export default {
           // 关闭 dailog
           this.closeDialog();
           // 刷新列表
-          this.$refs["pageTable"].refreshTable();
+          this.reloadTable();
         })
         .catch((res) => failureCb(res.message));
     },
