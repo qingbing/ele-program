@@ -319,14 +319,8 @@ export default {
       ReqHeader.optionEdit(
         merge(change, { id: properties.id, header_key: this.header.key })
       )
-        .then((res) => {
-          console.log(res);
-          cb(true)
-        })
-        .catch((err) => {
-          console.log(err)
-          cb(false);
-        });
+        .then(() => cb(true))
+        .catch(() => cb(false));
     },
     // 保存数据,回调函数终止提交标记
     handleAdd(successCb, failureCb) {
