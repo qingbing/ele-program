@@ -1,14 +1,18 @@
 <template>
   <div>
     <!-- query from -->
-    <el-form :inline="true" class="query-form" :model="query" ref="query">
-      <c-query-form :query="query" :items="queryItems"></c-query-form>
+    <el-form
+      :inline="true"
+      class="query-form"
+      :model="query.search"
+      ref="query-form"
+    >
+      <c-query-form
+        :query="query.search"
+        :items="query.searchItems"
+      ></c-query-form>
       <el-form-item>
-        <el-button type="primary" @click="buttonQuery">查询</el-button>
-        <el-button @click="resetForm('query')">重置</el-button>
-        <el-button type="warning" @click="buttonAdd">{{
-          addButtonText
-        }}</el-button>
+        <c-buttons refForm="query-form" :buttons="query.buttons"></c-buttons>
       </el-form-item>
     </el-form>
     <!-- list table -->
@@ -29,7 +33,7 @@
       <el-form
         :rules="addDailog.rules"
         :model="addDailog.entity"
-        ref="addForm"
+        ref="add-form"
         label-width="100px"
         label-position="right"
         style="width: 500px"
@@ -45,7 +49,7 @@
       <div slot="footer" class="dialog-footer">
         <!-- dailog 操作按钮 -->
         <c-buttons
-          refForm="addForm"
+          refForm="add-form"
           :buttons="addDailog.buttons"
           :submitCallback="handleAdd"
           :cancelCallback="handleCancel"
@@ -62,7 +66,7 @@
       <el-form
         :rules="editDailog.rules"
         :model="editDailog.entity"
-        ref="editForm"
+        ref="edit-form"
         label-width="100px"
         label-position="right"
         style="width: 500px"
@@ -78,7 +82,7 @@
       <div slot="footer" class="dialog-footer">
         <!-- dailog 操作按钮 -->
         <c-buttons
-          refForm="editForm"
+          refForm="edit-form"
           :buttons="editDailog.buttons"
           :submitCallback="handleEdit"
           :cancelCallback="handleCancel"
@@ -123,17 +127,32 @@
 
 <script>
 // 导入包
-import EPage from "./page";
+import EBase from "./base";
 import { copy } from "@qingbing/helper";
 
 // 导入包
 export default {
-  extends: EPage,
+  extends: EBase,
   data() {
     return {
-      addButtonText: "", // 添加按钮文字
-      query: {}, // 查询条件
-      queryItems: {}, // 查询条件项目
+      // 查询栏目配置
+      query: {
+        search: {}, // 默认参数
+        searchItems: {}, // 项目
+        buttons: [
+          {
+            label: "查询",
+            type: "primary",
+            callback: this.buttonQuery,
+          },
+          "reset",
+          {
+            label: this.getAddButtonText(),
+            type: "warning",
+            callback: this.buttonAdd,
+          },
+        ],
+      },
       // 操作的 dailog
       addDailog: {
         title: "", // dailog 标题
@@ -180,6 +199,9 @@ export default {
     CButtons: () => import("@/components/formButton"),
   },
   methods: {
+    getAddButtonText() {
+      return "添加";
+    },
     // 列数据渲染前可修改列数据
     beforeRender(item, idx) {},
     // 页面查询按钮

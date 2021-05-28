@@ -1,6 +1,6 @@
 <script>
 // 导入包
-import ECuri from "@/extends/curi.vue";
+import EListTable from "@/extends/list-table.vue";
 import { merge, copy } from "@qingbing/helper";
 import items from "./../json/header";
 import Labels from "@/conf/labels";
@@ -9,7 +9,7 @@ import Router from "@/utils/router-helper";
 
 // 导入包
 export default {
-  extends: ECuri,
+  extends: EListTable,
   components: {
     // 在自组件需要使用的组件，全部小写
     operate: () => import("@/components/operate"),
@@ -23,26 +23,34 @@ export default {
       description: "",
     };
     return {
-      addButtonText: "添加表头",
       query: {
-        key: "",
-        name: "",
-        is_open: "",
-      },
-      queryItems: {
-        key: {
-          input_type: "input-text",
-          label: "表头标识",
+        search: {
+          key: "",
+          name: "",
+          is_open: "",
         },
-        name: {
-          input_type: "input-text",
-          label: "表头名称",
+        searchItems: {
+          key: {
+            input_type: "input-text",
+            label: "表头标识",
+          },
+          name: {
+            input_type: "input-text",
+            label: "表头名称",
+          },
+          is_open: { dataType: "yesNo", label: "是否公开" },
         },
-        is_open: { dataType: "yesNo", label: "是否公开" },
       },
-      operDailog: {
+      addDailog: {
+        title: "添加表头",
         items: items.header,
         defaultEntity: copy(defaultEntity),
+      },
+      editDailog: {
+        title: "编辑表头",
+        items: items.header,
+        defaultEntity: copy(defaultEntity),
+        textFields: ["key"],
       },
       viewDailog: {
         title: "查看表头",
@@ -53,11 +61,15 @@ export default {
     };
   },
   methods: {
+    getAddButtonText() {
+      return "添加表头";
+    },
     getHeaders(cb) {
       cb([
         { name: "_idx", label: "序号", fixed: "left", width: "50" },
-        { name: "key", label: "表头标识", align: "left", width: "100" },
-        { name: "name", label: "表头名称", align: "left", width: "150" },
+        { name: "key", label: "表头标识", align: "left", width: "240" },
+        { name: "name", label: "表头名称", align: "left", width: "300" },
+        { name: "sort_order", label: "排序", width: "60" },
         {
           name: "is_open",
           label: "是否公开",
@@ -95,13 +107,17 @@ export default {
         .catch((res) => failureCb(res));
     },
     // 保存数据,回调函数终止提交标记
-    handleSave(successCb, failureCb) {
-      let promise;
-      if (this.isAdd()) {
-        promise = ReqHeader.headerAdd(this.operDailog.entity);
-      } else {
-        promise = ReqHeader.headerEdit(this.operDailog.entity);
-      }
+    handleAdd(successCb, failureCb) {
+      const promise = ReqHeader.headerAdd(this.addDailog.entity);
+      this._handleSave(promise, successCb, failureCb);
+    },
+    // 保存数据,回调函数终止提交标记
+    handleEdit(successCb, failureCb) {
+      const promise = ReqHeader.headerEdit(this.editDailog.entity);
+      this._handleSave(promise, successCb, failureCb);
+    },
+    // 保存数据,回调函数终止提交标记
+    _handleSave(promise, successCb, failureCb) {
       promise
         .then((res) => {
           successCb(res.message);

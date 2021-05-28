@@ -89,12 +89,8 @@ export default {
       label: "默认值",
     },
     is_enable: {
-      input_type: "input-select",
+      input_type: "ele-switch",
       label: "是否开启",
-      exts: {
-        clearable: true,
-        options: Labels.enable,
-      },
     },
     align: {
       input_type: "input-select",
@@ -105,36 +101,24 @@ export default {
       },
     },
     is_required: {
-      input_type: "input-select",
+      input_type: "ele-switch",
       label: "是否必选",
-      exts: {
-        clearable: true,
-        options: Labels.yesNo,
-      },
     },
     is_default: {
-      input_type: "input-select",
+      input_type: "ele-switch",
       label: "默认开启",
-      exts: {
-        clearable: true,
-        options: Labels.yesNo,
-      },
     },
     is_tooltip: {
-      input_type: "input-select",
+      input_type: "ele-switch",
       label: "使用tooltip",
-      exts: {
-        clearable: true,
-        options: Labels.yesNo,
-      },
+    },
+    is_editable: {
+      input_type: "ele-switch",
+      label: "表格编辑",
     },
     is_resizable: {
-      input_type: "input-select",
+      input_type: "ele-switch",
       label: "开启拖动",
-      exts: {
-        clearable: true,
-        options: Labels.yesNo,
-      },
     },
     description: {
       input_type: "input-area",

@@ -1,6 +1,6 @@
 <script>
 // 导入包
-import { isUndefined, dump, copy } from "@qingbing/helper";
+import { isUndefined, dump } from "@qingbing/helper";
 // 导出组件
 export default {
   data() {
@@ -13,14 +13,10 @@ export default {
       },
     };
   },
-  mounted() {
-    this.operDailog.entity = copy(this.operDailog.defaultEntity);
-  },
   methods: {
     // 重置表单
     resetForm(formName) {
       // 重置会看 el-form-item 组件元素上是否用 prop 指定了字段名，指定了重置才会生效
-      console.log(this.$refs);
       if (isUndefined(this.$refs[formName])) {
         dump.error(`${formName} 不是有效的的 form`);
       } else {
