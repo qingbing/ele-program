@@ -1,54 +1,30 @@
 // 导入axios请求模块
-import request from "./../utils/request";
-import CONF from "./../conf/constant";
-
-// 请求头 header
-const headers = {
-  [CONF.systemHeaderKey]: CONF.systems.program,
-};
+import Axios from "./system/program";
 
 /**
  * 获取前端用户拥有权限的菜单
  */
 export function getInfo() {
-  return request({
-    headers,
-    url: "/personal/info",
-    method: "post",
-  });
+  return Axios("/personal/info");
 }
 
 /**
  * 获取登录用户信息
  */
 export function getMenus() {
-  return request({
-    headers,
-    url: "/personal/menus",
-    method: "post",
-  });
+  return Axios("/personal/menus");
 }
 
 /**
  * 修改个人信息
  */
 export function changeInfo(data) {
-  return request({
-    headers,
-    url: "/personal/change-info",
-    method: "post",
-    data,
-  });
+  return Axios("/personal/change-info", data);
 }
 
 /**
  * 重置密码
  */
 export function resetPassword(data) {
-  return request({
-    headers,
-    url: "/personal/reset-password",
-    method: "post",
-    data,
-  });
+  return Axios("/personal/reset-password", data);
 }
