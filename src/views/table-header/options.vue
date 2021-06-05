@@ -3,7 +3,6 @@
 import EListTable from "@/extends/list-table.vue";
 import { isEmpty, merge, copy } from "@qingbing/helper";
 import items from "./../json/header";
-import Helper from "@/utils/helper";
 import ReqHeader from "@/api/header";
 import Router from "@/utils/router-helper";
 
@@ -142,9 +141,6 @@ export default {
     // 添加按钮文字
     getAddButtonText() {
       return "添加表头选项";
-    },
-    reloadTable() {
-      window.location.reload();
     },
     init(headerKey) {
       if (isEmpty(headerKey)) {
@@ -332,7 +328,10 @@ export default {
       ReqHeader.optionEdit(
         merge(change, { id: properties.id, header_key: this.header.key })
       )
-        .then(() => cb(true))
+        .then(() => {
+          cb(true);
+          this.reloadTable();
+        })
         .catch(() => cb(false));
     },
     // 保存数据,回调函数终止提交标记
