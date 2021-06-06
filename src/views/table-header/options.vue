@@ -4,6 +4,7 @@ import EListTable from "@/extends/list-table.vue";
 import { isEmpty, merge, copy } from "@qingbing/helper";
 import items from "./../json/header";
 import ReqHeader from "@/api/header";
+import { getTablesHeaders } from "@/api/pub";
 import Router from "@/utils/router-helper";
 
 // 导入包
@@ -151,131 +152,15 @@ export default {
       ReqHeader.headerView({ key: headerKey })
         .then((res) => {
           this.header = res.data;
-          this.pageTable = `表头选项[${this.header.name}]`;
+          this.pageTitle = `表头选项【${this.header.key}(${this.header.name})】`;
         })
         .catch(() => Router.error404(this));
     },
     getHeaders(cb) {
-      cb([
-        { name: "_idx", label: "序号", fixed: "left", width: "50" },
-        {
-          name: "field",
-          label: "选项字段",
-          fixed: "left",
-          align: "left",
-          width: "100",
-        },
-        {
-          name: "label",
-          label: "选项名称",
-          fixed: "left",
-          align: "left",
-          width: "150",
-          is_editable: true,
-          params: {
-            type: "text",
-          },
-        },
-        {
-          name: "sort_order",
-          label: "排序",
-          width: "50",
-          is_editable: true,
-          params: {
-            type: "text",
-          },
-        },
-        {
-          name: "width",
-          label: "列宽度",
-          width: "80",
-          is_editable: true,
-          params: {
-            type: "text",
-          },
-        },
-        {
-          name: "default",
-          label: "默认值",
-          width: "60",
-          is_editable: true,
-          params: {
-            type: "text",
-          },
-        },
-        { name: "component", label: "组件名", width: "80", default: "-" },
-        {
-          name: "fixed",
-          label: "固定方向",
-          width: "80",
-          is_editable: true,
-          params: {
-            type: "select",
-            options: items.options.fixed,
-          },
-        },
-        {
-          name: "align",
-          label: "对齐方式",
-          width: "80",
-          is_editable: true,
-          params: {
-            type: "select",
-            options: items.options.align,
-          },
-        },
-        {
-          name: "is_tooltip",
-          label: "过长隐藏",
-          width: "80",
-          is_editable: true,
-          params: {
-            type: "switch",
-          },
-        },
-        {
-          name: "is_resizable",
-          label: "拖动宽度",
-          width: "80",
-          is_editable: true,
-          params: {
-            type: "switch",
-          },
-        },
-        {
-          name: "is_required",
-          label: "必填",
-          width: "80",
-          is_editable: true,
-          params: {
-            type: "switch",
-          },
-        },
-        {
-          name: "is_default",
-          label: "默认开启",
-          width: "80",
-          is_editable: true,
-          params: {
-            type: "switch",
-          },
-        },
-        {
-          name: "is_enable",
-          label: "是否开启",
-          width: "80",
-          is_editable: true,
-          params: {
-            type: "switch",
-          },
-        },
-        {
-          name: "operate",
-          label: "操作",
-          component: "operate",
-          width: "260",
-          fixed: "right",
-          params: {
+      getTablesHeaders("program-header-options")
+        .then((res) => {
+          const headers = res.data;
+          headers.operate.params = {
             buttons: [
               { operType: "view", handle: this.buttonView },
               { operType: "edit", handle: this.buttonEdit },
@@ -283,9 +168,10 @@ export default {
               { label: "上移", handle: this.handleUp },
               { label: "下移", handle: this.handleDown },
             ],
-          },
-        },
-      ]);
+          };
+          cb(headers);
+        })
+        .catch(() => {});
     },
     getData(cb) {
       ReqHeader.optionList({ header_key: this.$route.params.key })

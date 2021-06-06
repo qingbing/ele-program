@@ -3,9 +3,9 @@
 import EListTable from "@/extends/list-table.vue";
 import { merge, copy } from "@qingbing/helper";
 import items from "./../json/header";
-import Labels from "@/conf/labels";
 import ReqHeader from "@/api/header";
 import Router from "@/utils/router-helper";
+import { getTablesHeaders } from "@/api/pub";
 
 // 导入包
 export default {
@@ -65,32 +65,20 @@ export default {
       return "添加表头";
     },
     getHeaders(cb) {
-      cb([
-        { name: "_idx", label: "序号", fixed: "left", width: "50" },
-        { name: "key", label: "表头标识", align: "left", width: "240" },
-        { name: "name", label: "表头名称", align: "left", width: "300" },
-        { name: "sort_order", label: "排序", width: "60" },
-        {
-          name: "is_open",
-          label: "是否公开",
-          width: "80",
-          options: Labels.yesNo,
-        },
-        {
-          name: "operate",
-          label: "操作",
-          component: "operate",
-          align: "left",
-          params: {
+      getTablesHeaders("program-header")
+        .then((res) => {
+          const headers = res.data;
+          headers.operate.params = {
             buttons: [
               { operType: "view", handle: this.buttonView },
               { operType: "edit", handle: this.buttonEdit },
               { operType: "delete", handle: this.handleDelete },
               { label: "子选项", handle: this.buttonOptions },
             ],
-          },
-        },
-      ]);
+          };
+          cb(headers);
+        })
+        .catch(() => {});
     },
     getData(cb) {
       ReqHeader.headerList(merge(this.query, this.pagination))

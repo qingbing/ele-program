@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 v-if="pageTitle">{{ pageTitle }}</h3>
+    <h4 class="page-title" v-if="pageTitle">{{ pageTitle }}</h4>
     <!-- query from -->
     <el-form
       :inline="true"
@@ -277,3 +277,16 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.page-title {
+  text-align: left;
+  margin: 10px;
+  font-weight: normal;
+  height: 40px;
+  line-height: 30px;
+  padding: 5px 10px;
+  font-size: 14px;
+  border-left: 3px solid #31c17b;
+}
+</style>

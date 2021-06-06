@@ -74,10 +74,11 @@ export default {
   height: 50px;
   line-height: 30px;
   padding: 10px 20px;
+  font-weight: bolder;
   font-size: 16px;
 }
 .line {
-  border-left: 3px solid #31c17b;
+  border-left: 5px solid #31c17b;
   padding-left: 10px;
 }
 </style>
