@@ -4,7 +4,7 @@ import EListTable from "@/extends/list-table.vue";
 import { isEmpty, merge, copy } from "@qingbing/helper";
 import items from "./../json/header";
 import ReqHeader from "@/api/header";
-import { getTablesHeaders } from "@/api/pub";
+import { getHeaderOptions } from "@/api/pub";
 import Router from "@/utils/router-helper";
 
 // 导入包
@@ -157,7 +157,7 @@ export default {
         .catch(() => Router.error404(this));
     },
     getHeaders(cb) {
-      getTablesHeaders("program-header-options")
+      getHeaderOptions("program-header-options")
         .then((res) => {
           const headers = res.data;
           headers.operate.params = {

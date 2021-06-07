@@ -5,7 +5,7 @@ import { merge, copy } from "@qingbing/helper";
 import items from "./../json/header";
 import ReqHeader from "@/api/header";
 import Router from "@/utils/router-helper";
-import { getTablesHeaders } from "@/api/pub";
+import { getHeaderOptions } from "@/api/pub";
 
 // 导入包
 export default {
@@ -65,7 +65,7 @@ export default {
       return "添加表头";
     },
     getHeaders(cb) {
-      getTablesHeaders("program-header")
+      getHeaderOptions("program-header")
         .then((res) => {
           const headers = res.data;
           headers.operate.params = {

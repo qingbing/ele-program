@@ -11,8 +11,8 @@ export function clearCache() {
 /**
  * 获取 table 表头
  */
-export function getTablesHeaders(headerKey) {
-  return Axios("/pub/table-header", {
+export function getHeaderOptions(headerKey) {
+  return Axios("/pub/header-options", {
     key: headerKey,
   });
 }
