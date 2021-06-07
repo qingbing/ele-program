@@ -31,7 +31,7 @@ export default {
       options: "",
       params: "",
       description: "",
-      sort_order: "0",
+      sort_order: "127",
       is_required: 0,
       is_default: 0,
       is_enable: 1,

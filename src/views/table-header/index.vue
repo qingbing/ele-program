@@ -19,7 +19,7 @@ export default {
       key: "",
       name: "",
       is_open: 0,
-      sort_order: "0",
+      sort_order: "127",
       description: "",
     };
     return {
@@ -81,7 +81,7 @@ export default {
         .catch(() => {});
     },
     getData(cb) {
-      ReqHeader.headerList(merge(this.query, this.pagination))
+      ReqHeader.headerList(merge(this.query.search, this.pagination))
         .then((res) => cb(res.data))
         .catch(() => {});
     },

@@ -7,7 +7,7 @@ export default [
     path: "/table-header",
     component: Layout,
     meta: {
-      title: "个人中心",
+      title: "表头管理",
       realPath: "/table-header/index",
     },
     children: [
@@ -17,7 +17,7 @@ export default [
       },
       {
         path: "index",
-        meta: { title: "表头管理" },
+        meta: { title: "表头类型管理" },
         component: () => import("../../views/table-header/index.vue"),
       },
       {

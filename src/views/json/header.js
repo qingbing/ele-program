@@ -30,12 +30,8 @@ export default {
       rules: [{ type: "required" }],
     },
     is_open: {
-      input_type: "input-select",
+      input_type: "ele-switch",
       label: "是否公开",
-      exts: {
-        options: Labels.yesNo,
-      },
-      rules: [{ type: "required" }, { type: "enum" }],
     },
     sort_order: {
       input_type: "input-number",
@@ -90,7 +86,7 @@ export default {
     },
     is_enable: {
       input_type: "ele-switch",
-      label: "是否开启",
+      label: "启用状态",
     },
     align: {
       input_type: "input-select",

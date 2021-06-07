@@ -7,7 +7,7 @@ export default [
     path: "/form",
     component: Layout,
     meta: {
-      title: "个人中心",
+      title: "表单管理",
       realPath: "/form/index",
     },
     children: [
@@ -18,7 +18,7 @@ export default [
       {
         path: "index",
         component: () => import("../../views/form/index.vue"),
-        meta: { title: "表单管理" },
+        meta: { title: "表单类型管理" },
       },
       {
         path: "options/:key",

@@ -1,13 +1,19 @@
 <template>
   <span>
-    <el-link
-      v-for="(button, idx) in params.buttons"
-      :key="idx"
-      :type="button.type"
-      @click="handle(idx)"
-    >
-      [ {{ button.label }} ]
-    </el-link>
+    <template v-for="(button, idx) in params.buttons">
+      <el-link
+        v-if="
+          !button.showProperty ||
+          !button.showValue ||
+          row[button.showProperty] == button.showValue
+        "
+        :key="idx"
+        :type="button.type"
+        @click="handle(idx)"
+      >
+        [ {{ button.label }} ]
+      </el-link>
+    </template>
   </span>
 </template>
 
