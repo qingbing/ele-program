@@ -25,6 +25,11 @@ export default [
         component: () => import("../../views/form/options.vue"),
         meta: { title: "表单选项管理" },
       },
+      {
+        path: "setting/:key",
+        component: () => import("../../views/form/setting.vue"),
+        meta: { title: "配置表单" },
+      },
     ],
   },
 ];
