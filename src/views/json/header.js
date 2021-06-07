@@ -1,6 +1,3 @@
-// 导入
-import Labels from "./../../conf/labels";
-
 const fixed = {
   left: "靠左",
   right: "靠右",

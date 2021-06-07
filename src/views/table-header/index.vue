@@ -65,7 +65,7 @@ export default {
       return "添加表头";
     },
     getHeaders(cb) {
-      getHeaderOptions("program-header")
+      getHeaderOptions("program-header-category")
         .then((res) => {
           const headers = res.data;
           headers.operate.params = {

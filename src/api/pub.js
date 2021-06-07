@@ -9,10 +9,19 @@ export function clearCache() {
 }
 
 /**
- * 获取 table 表头
+ * 获取表头输入选项
  */
 export function getHeaderOptions(headerKey) {
   return Axios("/pub/header-options", {
     key: headerKey,
+  });
+}
+
+/**
+ * 获取表单输入选项
+ */
+export function getFormOptions(key) {
+  return Axios("/pub/form-options", {
+    key: key,
   });
 }

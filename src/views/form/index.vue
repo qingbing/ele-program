@@ -56,7 +56,7 @@ export default {
         title: "编辑表单",
         items: items.category,
         defaultEntity: copy(defaultEntity),
-        textFields: ["key"],
+        textFields: ["key", "is_setting"],
       },
       viewDailog: {
         title: "查看表单",

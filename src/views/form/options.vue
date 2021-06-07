@@ -4,8 +4,8 @@ import EListTable from "@/extends/list-table.vue";
 import { isEmpty, merge, copy } from "@qingbing/helper";
 import { getHeaderOptions } from "@/api/pub";
 import Router from "@/utils/router-helper";
-import ReqHeader from "@/api/header";
-import items from "./../json/header";
+import ReqForm from "@/api/form";
+import items from "./../json/form";
 
 // 导入包
 export default {
@@ -18,31 +18,24 @@ export default {
     this.init(this.$route.params.key);
     const defaultEntity = {
       id: "",
-      header_key: this.$route.params.key,
+      key: this.$route.params.key,
       field: "",
       label: "",
-      width: "",
-      fixed: "",
-      default: "",
-      align: "",
-      is_tooltip: 0,
-      is_resizable: 0,
-      component: "",
-      options: "",
-      params: "",
-      description: "",
-      sort_order: "127",
-      is_required: 0,
-      is_default: 0,
+      input_type: "",
       is_enable: 1,
-      operate_ip: "",
-      operate_uid: "",
+      is_required: 0,
+      required_msg: "",
+      sort_order: "127",
+      default: "",
+      description: "",
+      rules: "",
+      exts: "",
       created_at: "",
       updated_at: "",
     };
     return {
-      header: {},
-      headerOptions: [],
+      form: {},
+      formOptions: [],
       pagination: undefined, // 取消分页
       tableEditConfig: {
         editable: true,
@@ -68,69 +61,59 @@ export default {
         ],
       },
       addDailog: {
-        title: "添加表头选项",
+        title: "添加表单选项",
         visible: false,
         entity: {},
         rules: {},
-        items: items.headerOptions,
+        items: items.options,
         viewFields: [
+          "key",
           "field",
           "label",
-          "sort_order",
-          "width",
-          "fixed",
-          "default",
-          "is_required",
-          "is_default",
+          "input_type",
           "is_enable",
-          "align",
-          "is_tooltip",
-          "is_resizable",
-          "is_editable",
+          "is_required",
+          "required_msg",
+          "sort_order",
+          "default",
           "description",
-          "component",
-          "options",
-          "params",
+          "rules",
+          "exts",
         ],
         textFields: [],
         buttons: ["submit", "cancel"],
         defaultEntity: copy(defaultEntity),
       },
       editDailog: {
-        title: "编辑表头选项",
+        title: "编辑表单选项",
         visible: false,
         entity: {},
         rules: {},
-        items: items.headerOptions,
+        items: items.options,
         viewFields: [
+          "key",
           "field",
           "label",
-          "sort_order",
-          "width",
-          "fixed",
-          "default",
-          "is_required",
-          "is_default",
+          "input_type",
           "is_enable",
-          "align",
-          "is_tooltip",
-          "is_resizable",
-          "is_editable",
+          "is_required",
+          "required_msg",
+          "sort_order",
+          "default",
           "description",
-          "component",
-          "options",
-          "params",
+          "rules",
+          "exts",
         ],
-        textFields: ["field"],
+        textFields: ["field", "input_type"],
         buttons: ["submit", "cancel"],
         defaultEntity: copy(defaultEntity),
       },
       viewDailog: {
-        title: "查看表头选项",
+        title: "查看表单选项",
         visible: false,
         entity: {},
         rules: {},
-        items: items.headerOptions,
+        items: items.options,
         viewFields: [],
         textFields: [],
         buttons: ["cancel"],
@@ -141,23 +124,23 @@ export default {
   methods: {
     // 添加按钮文字
     getAddButtonText() {
-      return "添加表头选项";
+      return "添加表单选项";
     },
-    init(headerKey) {
-      if (isEmpty(headerKey)) {
+    init(key) {
+      if (isEmpty(key)) {
         Router.error404(this);
         return;
       }
-      // 获取表头详情
-      ReqHeader.headerView({ key: headerKey })
+      // 获取表单详情
+      ReqForm.formView({ key: key })
         .then((res) => {
-          this.header = res.data;
-          this.pageTitle = `表头选项【${this.header.key}(${this.header.name})】`;
+          this.form = res.data;
+          this.pageTitle = `表单选项【${this.form.key}(${this.form.name})】`;
         })
         .catch(() => Router.error404(this));
     },
     getHeaders(cb) {
-      getHeaderOptions("program-header-options")
+      getHeaderOptions("program-form-options")
         .then((res) => {
           const headers = res.data;
           headers.operate.params = {
@@ -174,12 +157,12 @@ export default {
         .catch(() => {});
     },
     getData(cb) {
-      ReqHeader.headerOptionList({ header_key: this.$route.params.key })
+      ReqForm.formOptionList({ key: this.$route.params.key })
         .then((res) => cb(res.data))
         .catch(() => {});
     },
     buttonRefresh() {
-      ReqHeader.headerOptionRefresh({ header_key: this.header.key })
+      ReqForm.formOptionRefresh({ key: this.form.key })
         .then(() => {
           // 刷新表格
           this.reloadTable();
@@ -192,14 +175,14 @@ export default {
     buttonAdd() {
       // 设置 addDailog 表单数据
       this.addDailog.entity = copy(this.addDailog.defaultEntity);
-      this.addDailog.title = `添加表头${this.header.name}选项`;
+      this.addDailog.title = `添加表单${this.form.name}选项`;
       // 打开 dailog
       this.openDialog("addDailog");
     },
     buttonEdit(entity) {
       // 设置 editDailog 表单数据
       this.editDailog.entity = copy(entity);
-      this.editDailog.title = `编辑表头${this.header.name}选项`;
+      this.editDailog.title = `编辑表单${this.form.name}选项`;
       // 打开 dailog
       this.openDialog("editDailog");
     },
@@ -211,8 +194,8 @@ export default {
     },
     // 表格编辑的保存
     cellSave(cb, change, properties) {
-      ReqHeader.headerOptionEdit(
-        merge(change, { id: properties.id, header_key: this.header.key })
+      ReqForm.formOptionEdit(
+        merge(change, { id: properties.id, key: this.form.key })
       )
         .then(() => {
           cb(true);
@@ -222,16 +205,16 @@ export default {
     },
     // 保存数据,回调函数终止提交标记
     handleAdd(successCb, failureCb) {
-      const promise = ReqHeader.headerOptionAdd(this.addDailog.entity);
+      const promise = ReqForm.formOptionAdd(this.addDailog.entity);
       this.addOrEditSave(promise, successCb, failureCb);
     },
     // 保存数据,回调函数终止提交标记
     handleEdit(successCb, failureCb) {
-      const promise = ReqHeader.headerOptionEdit(this.editDailog.entity);
+      const promise = ReqForm.formOptionEdit(this.editDailog.entity);
       this.addOrEditSave(promise, successCb, failureCb);
     },
     handleDelete(entity, successCb, failureCb) {
-      ReqHeader.headerOptionDel({ id: entity.id })
+      ReqForm.formOptionDel({ id: entity.id })
         .then((res) => {
           successCb(res.message);
           // 刷新列表
@@ -241,7 +224,7 @@ export default {
     },
     // 顺序上移
     handleUp(entity, successCb, failureCb) {
-      ReqHeader.headerOptionUp({ id: entity.id })
+      ReqForm.formOptionUp({ id: entity.id })
         .then((res) => {
           successCb(res.message);
           // 刷新列表
@@ -251,7 +234,7 @@ export default {
     },
     // 顺序下移
     handleDown(entity, successCb, failureCb) {
-      ReqHeader.headerOptionDown({ id: entity.id })
+      ReqForm.formOptionDown({ id: entity.id })
         .then((res) => {
           successCb(res.message);
           // 刷新列表
