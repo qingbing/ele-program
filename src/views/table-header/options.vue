@@ -174,12 +174,12 @@ export default {
         .catch(() => {});
     },
     getData(cb) {
-      ReqHeader.optionList({ header_key: this.$route.params.key })
+      ReqHeader.headerOptionList({ header_key: this.$route.params.key })
         .then((res) => cb(res.data))
         .catch(() => {});
     },
     buttonRefresh() {
-      ReqHeader.optionRefresh({ header_key: this.header.key })
+      ReqHeader.headerOptionRefresh({ header_key: this.header.key })
         .then(() => {
           // 刷新表格
           this.reloadTable();
@@ -211,7 +211,7 @@ export default {
     },
     // 表格编辑的保存
     cellSave(cb, change, properties) {
-      ReqHeader.optionEdit(
+      ReqHeader.headerOptionEdit(
         merge(change, { id: properties.id, header_key: this.header.key })
       )
         .then(() => {
@@ -222,16 +222,16 @@ export default {
     },
     // 保存数据,回调函数终止提交标记
     handleAdd(successCb, failureCb) {
-      const promise = ReqHeader.optionAdd(this.addDailog.entity);
+      const promise = ReqHeader.headerOptionAdd(this.addDailog.entity);
       this.addOrEditSave(promise, successCb, failureCb);
     },
     // 保存数据,回调函数终止提交标记
     handleEdit(successCb, failureCb) {
-      const promise = ReqHeader.optionEdit(this.editDailog.entity);
+      const promise = ReqHeader.headerOptionEdit(this.editDailog.entity);
       this.addOrEditSave(promise, successCb, failureCb);
     },
     handleDelete(entity, successCb, failureCb) {
-      ReqHeader.optionDel({ id: entity.id })
+      ReqHeader.headerOptionDel({ id: entity.id })
         .then((res) => {
           successCb(res.message);
           // 刷新列表
@@ -241,7 +241,7 @@ export default {
     },
     // 顺序上移
     handleUp(entity, successCb, failureCb) {
-      ReqHeader.optionUp({ id: entity.id })
+      ReqHeader.headerOptionUp({ id: entity.id })
         .then((res) => {
           successCb(res.message);
           // 刷新列表
@@ -251,7 +251,7 @@ export default {
     },
     // 顺序下移
     handleDown(entity, successCb, failureCb) {
-      ReqHeader.optionDown({ id: entity.id })
+      ReqHeader.headerOptionDown({ id: entity.id })
         .then((res) => {
           successCb(res.message);
           // 刷新列表
