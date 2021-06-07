@@ -7,9 +7,7 @@ export default [
   {
     path: "/login",
     component: () => import("./../../views/login/index.vue"),
-    meta: {
-      title: "登录",
-    },
+    meta: { title: "登录" },
   },
   // 首页
   {
@@ -27,24 +25,18 @@ export default [
       {
         path: "dashboard",
         component: () => import("./../../views/Home.vue"),
-        meta: {
-          title: "控制面板",
-        },
+        meta: { title: "控制面板" },
       },
       // 错误页面
       {
         path: "/401",
         component: () => import("./../../views/error/401"),
-        meta: {
-          title: "Error401 ：无权访问网页",
-        },
+        meta: { title: "Error401 ：无权访问网页" },
       },
       {
         path: "/404",
         component: () => import("./../../views/error/404"),
-        meta: {
-          title: "Error404 ：找不到网页",
-        },
+        meta: { title: "Error404 ：找不到网页" },
       },
     ],
   },

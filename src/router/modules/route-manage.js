@@ -18,16 +18,13 @@ export default [
       {
         path: "type/list",
         component: () => import("../../views/route-manage/route-type/list.vue"),
-        meta: {
-          title: "路由类型",
-        },
+        meta: { title: "路由类型" },
       },
       {
         path: "record/list",
-        component: () => import("../../views/route-manage/route-record/list.vue"),
-        meta: {
-          title: "路由管理",
-        },
+        component: () =>
+          import("../../views/route-manage/route-record/list.vue"),
+        meta: { title: "路由管理" },
       },
     ],
   },
