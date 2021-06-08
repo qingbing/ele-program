@@ -41,6 +41,10 @@ export default {
       label: "排序",
       rules: [{ type: "required" }, { type: "number", min: 0, max: 127 }],
     },
+    is_open: {
+      input_type: "ele-switch",
+      label: "是否公开",
+    },
     is_enable: {
       input_type: "ele-switch",
       label: "启用状态",
@@ -52,10 +56,6 @@ export default {
         options: Labels.yesNo,
       },
       rules: [{ type: "required" }, { type: "enum" }],
-    },
-    is_open: {
-      input_type: "ele-switch",
-      label: "是否公开",
     },
     description: {
       input_type: "input-area",

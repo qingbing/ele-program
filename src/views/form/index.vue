@@ -1,11 +1,11 @@
 <script>
 // 导入包
 import EListTable from "@/extends/list-table.vue";
-import { merge, copy } from "@qingbing/helper";
-import items from "./../json/form";
-import ReqForm from "@/api/form";
 import Router from "@/utils/router-helper";
 import { getHeaderOptions } from "@/api/pub";
+import { merge, copy } from "@qingbing/helper";
+import ReqForm from "@/api/form";
+import items from "./../json/form";
 
 // 导入包
 export default {

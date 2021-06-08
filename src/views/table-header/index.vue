@@ -1,11 +1,11 @@
 <script>
 // 导入包
 import EListTable from "@/extends/list-table.vue";
-import { merge, copy } from "@qingbing/helper";
-import items from "./../json/header";
-import ReqHeader from "@/api/header";
 import Router from "@/utils/router-helper";
 import { getHeaderOptions } from "@/api/pub";
+import { merge, copy } from "@qingbing/helper";
+import ReqHeader from "@/api/header";
+import items from "./../json/header";
 
 // 导入包
 export default {

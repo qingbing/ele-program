@@ -2,6 +2,13 @@
 import Axios from "./system/program";
 
 /**
+ * 获取系统用作选项
+ */
+export function getOptionSystems() {
+  return Axios("/pub/option-systems");
+}
+
+/**
  * 系统清理缓存
  */
 export function clearCache() {
