@@ -1,7 +1,7 @@
 <script>
 import EForm from "@/extends/form.vue";
 import Router from "@/utils/router-helper";
-import { isEmpty, uniqid, merge } from "@qingbing/helper";
+import { isEmpty, uniqid, merge, asyncAll } from "@qingbing/helper";
 import ReqForm from "@/api/form";
 import { getFormOptions } from "@/api/pub";
 
@@ -28,33 +28,27 @@ export default {
         Router.error404(this);
         return;
       }
-      // 获取表单详情
-      ReqForm.formView({ key: key })
-        .then((res) => {
-          this.category = res.data;
-          if (!this.category.is_setting) {
-            Router.error404(this);
-          }
-          this.pageTitle = `配置表单【${this.category.key}(${this.category.name})】`;
-
-          // 获取配置表单界面选项信息
-          getFormOptions(this.category.key)
-            .then((res) => {
-              this.items = res.data;
-              // 获取配置表单值
-              ReqForm.formSettingGet({
-                key: this.category.key,
-              })
-                .then((res) => {
-                  this.entity = res.data;
-                  // 重新设置 key 而强制重新渲染页面
-                  this.uniqueKey = uniqid();
-                })
-                .catch((err) => err);
-            })
-            .catch((err) => err);
-        })
-        .catch((err) => err);
+      const promises = {
+        category: ReqForm.formView({ key }), // 获取表单详情
+        formOptions: getFormOptions(key), // 获取配置表单界面选项信息
+        formSeting: ReqForm.formSettingGet({ key }), // 获取配置表单值
+      };
+      // 对于多个后台接口，采用异步加载尽量降低界面的渲染耗时
+      asyncAll(promises, (res) => {
+        if (!res.category.is_setting) {
+          this.$message.error("非配置表单不能进入该界面");
+          return;
+        }
+        this.category = res.category;
+        // 设置标题
+        this.pageTitle = `配置表单【${this.category.key}(${this.category.name})】`;
+        // 设置表单选项
+        this.items = res.formOptions;
+        // 设置表单数据
+        this.entity = res.formSeting;
+        // 重新设置 key 而强制重新渲染页面
+        this.uniqueKey = uniqid();
+      });
     },
     // 保存结果
     handleSave(successCb, failureCb) {
@@ -71,7 +65,6 @@ export default {
     $route: function (to, from) {
       if (to.params.key != from.params.key) {
         this.init(to.params.key); // 重新初始化数据
-        this.reloadTable();
       }
     },
   },
