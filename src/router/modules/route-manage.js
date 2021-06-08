@@ -8,22 +8,21 @@ export default [
     component: Layout,
     meta: {
       title: "路由管理",
-      realPath: "/route-manage/record/list",
+      realPath: "/route-manage/route-record",
     },
     children: [
       {
         path: "",
-        redirect: "record/list",
+        redirect: "route-record",
       },
       {
-        path: "type/list",
-        component: () => import("../../views/route-manage/route-type/list.vue"),
+        path: "route-type",
+        component: () => import("../../views/route-manage/route-type.vue"),
         meta: { title: "路由类型" },
       },
       {
-        path: "record/list",
-        component: () =>
-          import("../../views/route-manage/route-record/list.vue"),
+        path: "route-record",
+        component: () => import("../../views/route-manage/route-record.vue"),
         meta: { title: "路由管理" },
       },
     ],
