@@ -9,6 +9,15 @@ export function getOptionSystems() {
 }
 
 /**
+ * 获取系统用作选项
+ */
+export function getOptionRouteTypes(systemAlias) {
+  return Axios("/pub/option-route-types", {
+    system_alias: systemAlias,
+  });
+}
+
+/**
  * 系统清理缓存
  */
 export function clearCache() {

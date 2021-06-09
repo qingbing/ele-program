@@ -30,6 +30,10 @@ export default {
       }
       this.openDialogRef = name;
       this[name].visible = true;
+      // 表单重置
+      if (!isUndefined(this.$refs[this[name].formRef])) {
+        this.resetForm(this[name].formRef);
+      }
     },
     // 设置 dailog 为关闭状态
     closeDialog(name) {

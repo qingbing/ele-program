@@ -3,42 +3,45 @@
     <h4 class="page-title" v-if="pageTitle">{{ pageTitle }}</h4>
     <!-- query from -->
     <el-form
-      :inline="true"
       class="query-form"
+      :inline="true"
       :model="query.search"
-      ref="query-form"
+      :ref="query.formRef"
     >
       <c-query-form
         :query="query.search"
         :items="query.searchItems"
       ></c-query-form>
       <el-form-item>
-        <c-buttons refForm="query-form" :buttons="query.buttons"></c-buttons>
+        <c-buttons
+          :refForm="query.formRef"
+          :buttons="query.buttons"
+        ></c-buttons>
       </el-form-item>
     </el-form>
     <!-- list table -->
     <c-table
+      ref="pageTable"
       :getHeaders="getHeaders"
       :getTableData="getData"
       :beforeRender="beforeRender"
       :pagination="pagination"
       :editConfig="tableEditConfig"
-      ref="pageTable"
     ></c-table>
     <!-- add -->
     <el-dialog
+      width="600px"
       :title="addDailog.title"
       :visible.sync="addDailog.visible"
-      width="600px"
       append-to-body
     >
       <el-form
-        :rules="addDailog.rules"
-        :model="addDailog.entity"
-        ref="add-form"
         label-width="100px"
         label-position="right"
         style="width: 500px"
+        :rules="addDailog.rules"
+        :model="addDailog.entity"
+        :ref="addDailog.formRef"
       >
         <element-form
           :formData="addDailog.entity"
@@ -51,7 +54,7 @@
       <div slot="footer" class="dialog-footer">
         <!-- dailog 操作按钮 -->
         <c-buttons
-          refForm="add-form"
+          :refForm="addDailog.formRef"
           :buttons="addDailog.buttons"
           :submitCallback="handleAdd"
           :cancelCallback="handleCancel"
@@ -60,18 +63,18 @@
     </el-dialog>
     <!-- edit -->
     <el-dialog
+      width="600px"
       :title="editDailog.title"
       :visible.sync="editDailog.visible"
-      width="600px"
       append-to-body
     >
       <el-form
-        :rules="editDailog.rules"
-        :model="editDailog.entity"
-        ref="edit-form"
         label-width="100px"
         label-position="right"
         style="width: 500px"
+        :rules="editDailog.rules"
+        :model="editDailog.entity"
+        :ref="editDailog.formRef"
       >
         <element-form
           :formData="editDailog.entity"
@@ -84,7 +87,7 @@
       <div slot="footer" class="dialog-footer">
         <!-- dailog 操作按钮 -->
         <c-buttons
-          refForm="edit-form"
+          :refForm="editDailog.formRef"
           :buttons="editDailog.buttons"
           :submitCallback="handleEdit"
           :cancelCallback="handleCancel"
@@ -93,18 +96,18 @@
     </el-dialog>
     <!-- view -->
     <el-dialog
+      width="600px"
       :title="viewDailog.title"
       :visible.sync="viewDailog.visible"
-      width="600px"
       append-to-body
     >
       <el-form
-        :rules="viewDailog.rules"
-        :model="viewDailog.entity"
-        ref="viewForm"
         label-width="100px"
         label-position="right"
         style="width: 500px"
+        :rules="viewDailog.rules"
+        :model="viewDailog.entity"
+        :ref="viewDailog.formRef"
       >
         <element-form
           :formData="viewDailog.entity"
@@ -118,7 +121,7 @@
       <div slot="footer" class="dialog-footer">
         <!-- dailog 操作按钮 -->
         <c-buttons
-          refForm="viewForm"
+          :refForm="viewDailog.formRef"
           :buttons="viewDailog.buttons"
           :cancelCallback="handleCancel"
         ></c-buttons>
@@ -146,6 +149,7 @@ export default {
       },
       // 查询栏目配置
       query: {
+        formRef: "query-form",
         search: {}, // 默认参数
         searchItems: {}, // 项目
         buttons: [
@@ -164,6 +168,7 @@ export default {
       },
       // 操作的 dailog
       addDailog: {
+        formRef: "add-dailog-form",
         title: "", // dailog 标题
         visible: false, // 是否打开 dailog
         entity: {}, // 当前操作实体
@@ -177,6 +182,7 @@ export default {
       },
       // 操作的 dailog
       editDailog: {
+        formRef: "add-dailog-form",
         title: "", // dailog 标题
         visible: false, // 是否打开 dailog
         entity: {}, // 当前操作实体
@@ -190,6 +196,7 @@ export default {
       },
       // 查看的 dailog
       viewDailog: {
+        formRef: "view-dailog-form",
         title: "", // dailog 标题
         visible: false, // 是否打开 dailog
         entity: {}, // 当前操作实体
