@@ -1,5 +1,5 @@
 // 导入axios请求模块
-import Axios from "./system/program";
+import Axios from "./systems/program";
 
 /**
  * 导出

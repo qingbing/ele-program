@@ -3,7 +3,6 @@
 import EListTable from "@/extends/list-table.vue";
 import { getHeaderOptions, getFormOptions, getOptionSystems } from "@/api/pub";
 import { merge, copy, asyncAll } from "@qingbing/helper";
-import Labels from "@/conf/labels";
 import ReqLogs from "@/api/logs";
 
 // 导入包
@@ -108,7 +107,7 @@ export default {
       });
     },
     getData(cb) {
-      ReqLogs.routeLogList(merge(this.query.search, this.pagination))
+      ReqLogs.operateLogList(merge(this.query.search, this.pagination))
         .then((res) => cb(res.data))
         .catch(() => {});
     },

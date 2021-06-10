@@ -1,5 +1,5 @@
 // 导入axios请求模块
-import Axios from "./system/program";
+import Axios from "./systems/program";
 
 /**
  * 获取前端用户拥有权限的菜单
