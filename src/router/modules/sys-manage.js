@@ -12,6 +12,11 @@ export default [
         component: () => import("../../views/system/index.vue"),
         meta: { title: "接口系统" },
       },
+      {
+        path: "replace",
+        component: () => import("../../views/replace/index.vue"),
+        meta: { title: "替换模版" },
+      },
     ],
   },
 ];
