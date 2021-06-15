@@ -17,6 +17,6 @@ export default {
   routeRecordDel: (data) => Axios("/route-record/del", data), // 删除路由记录
   routeRecordView: (data) => Axios("/route-record/view", data), // 路由记录详情
   // 编辑路由日志配置
-  routeRecordEditLogConfig: (data) =>
-    Axios("/route-record/edit-log-config", data),
+  routeRecordEditRecordConfig: (data) =>
+    Axios("/route-record/edit-record-config", data),
 };

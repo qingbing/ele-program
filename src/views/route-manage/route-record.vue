@@ -41,6 +41,7 @@ export default {
           route: "",
           is_operate: "",
           is_logging: "",
+          is_mocking: "",
         },
         searchItems: {
           system_alias: {
@@ -74,7 +75,15 @@ export default {
           },
           is_logging: {
             input_type: "input-select",
-            label: "记录日志",
+            label: "开启日志",
+            exts: {
+              clearable: true,
+              options: Labels.yesNo,
+            },
+          },
+          is_mocking: {
+            input_type: "input-select",
+            label: "开启mock",
             exts: {
               clearable: true,
               options: Labels.yesNo,
@@ -95,9 +104,9 @@ export default {
           },
         ],
       },
-      // add-dailog 用于编辑日志配置
+      // add-dailog 用于编辑路由配置
       addDailog: {
-        title: "配置日志",
+        title: "路由配置",
         defaultEntity: copy(defaultEntity),
         viewFields: [
           "route",
@@ -106,10 +115,18 @@ export default {
           "route_type",
           "is_operate",
           "is_logging",
-          "key_fields",
-          "message",
+          "logging_key_fields",
+          "logging_message",
+          "is_mocking",
+          "mocking_response",
         ],
-        textFields: ["route", "system_alias", "description", "is_operate"],
+        textFields: [
+          "route",
+          "system_alias",
+          "description",
+          "route_type",
+          "is_operate",
+        ],
       },
       editDailog: {
         title: "编辑路由",
@@ -136,6 +153,12 @@ export default {
     beforeRender(item, idx) {
       item.is_operate = parseInt(item.is_operate);
       item.is_logging = parseInt(item.is_logging);
+      item.is_mocking = parseInt(item.is_mocking);
+      try {
+        item.mocking_response = JSON.parse(item.mocking_response);
+      } catch (error) {
+        item.mocking_response = null;
+      }
     },
     switchEdit() {
       if (this.tableEditConfig.editable) {
@@ -177,7 +200,7 @@ export default {
           buttons: [
             { operType: "view", handle: this.buttonView },
             { operType: "edit", handle: this.buttonEdit },
-            { label: "配置日志", handle: this.buttonEditConfig },
+            { label: "路由配置", handle: this.buttonEditConfig },
             { operType: "delete", handle: this.handleDelete },
           ],
         };
@@ -238,14 +261,14 @@ export default {
     // 保存单元格
     cellSave(cb, change, properties, params) {
       let promise;
-      if (isUndefined(change.is_logging)) {
+      if (isUndefined(change.is_logging) && isUndefined(change.is_mocking)) {
         // 路由编辑
         promise = ReqRoute.routeRecordEdit(
           merge(change, { id: properties.id })
         );
       } else {
-        // 日志记录配置
-        promise = ReqRoute.routeRecordEditLogConfig(
+        // 路由配置
+        promise = ReqRoute.routeRecordEditRecordConfig(
           merge(change, { id: properties.id })
         );
       }
@@ -270,7 +293,7 @@ export default {
       const promise = ReqRoute.routeRecordEdit(this.editDailog.entity);
       this.addOrEditSave(promise, successCb, failureCb);
     },
-    // 日志配置使用 addDialog
+    // 路由配置使用 addDialog
     buttonEditConfig(entity) {
       this._openDailogForm(entity, (routeTypeOptions) => {
         this.addDailog.items.route_type.exts = {
@@ -282,9 +305,11 @@ export default {
         this.openDialog("addDailog");
       });
     },
-    // 日志配置使用 addDialog
+    // 路由配置使用 addDialog
     handleAdd(successCb, failureCb) {
-      const promise = ReqRoute.routeRecordEditLogConfig(this.addDailog.entity);
+      const promise = ReqRoute.routeRecordEditRecordConfig(
+        this.addDailog.entity
+      );
       this.addOrEditSave(promise, successCb, failureCb);
     },
   },
