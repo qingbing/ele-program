@@ -95,6 +95,7 @@ export default {
         title: "添加系统",
         defaultEntity: copy(defaultEntity),
         viewFields: [
+          "rule",
           "alias",
           "name",
           "uri_prefix",
@@ -105,13 +106,13 @@ export default {
           "is_open_log",
           "description",
           "ext",
-          "rule",
         ],
       },
       editDailog: {
         title: "编辑系统",
         defaultEntity: copy(defaultEntity),
         viewFields: [
+          "rule",
           "alias",
           "name",
           "uri_prefix",
@@ -122,9 +123,8 @@ export default {
           "is_open_log",
           "description",
           "ext",
-          "rule",
         ],
-        textFields: ["alias"],
+        textFields: ["rule", "alias"],
       },
       viewDailog: {
         title: "系统详情",
