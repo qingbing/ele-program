@@ -5,14 +5,14 @@ import Axios from "./systems/program";
  * 获取系统用作选项
  */
 export function getOptionSystems() {
-  return Axios("/pub/option-systems");
+  return Axios("/pub/option-interface-systems");
 }
 
 /**
  * 获取系统用作选项
  */
 export function getOptionRouteTypes(systemAlias) {
-  return Axios("/pub/option-route-types", {
+  return Axios("/pub/option-interface-types", {
     system_alias: systemAlias,
   });
 }

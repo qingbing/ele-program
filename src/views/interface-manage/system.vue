@@ -4,7 +4,7 @@ import EListTable from "@/extends/list-table.vue";
 import { getHeaderOptions, getFormOptions } from "@/api/pub";
 import Labels from "@/conf/labels";
 import { merge, copy, asyncAll } from "@qingbing/helper";
-import ReqSystem from "@/api/system";
+import ReqInterfaces from "@/api/interfaces";
 
 // 导入包
 export default {
@@ -16,17 +16,19 @@ export default {
   created() {},
   data() {
     const defaultEntity = {
-      alias: "",
-      name: "",
+      system_alias: "",
+      system_name: "",
       uri_prefix: "",
       rule: "",
       ext: {},
       description: "",
       sort_order: "",
       is_enable: 1,
-      is_continue: 1,
+      is_allow_new_interface: 1,
       is_record_field: 1,
-      is_open_log: 1,
+      is_open_access_log: 1,
+      is_open_validate: 0,
+      is_strict_validate: 0,
     };
     return {
       tableEditConfig: {
@@ -35,14 +37,17 @@ export default {
       },
       query: {
         search: {
-          alias: "",
+          system_alias: "",
           is_enable: "",
-          is_continue: "",
+          is_allow_new_interface: "",
           is_record_field: "",
-          name: "",
+          is_open_access_log: "",
+          is_open_validate: "",
+          is_strict_validate: "",
+          system_name: "",
         },
         searchItems: {
-          alias: {
+          system_alias: {
             input_type: "input-text",
             label: "系统别名",
           },
@@ -53,21 +58,42 @@ export default {
               options: Labels.enable,
             },
           },
-          is_continue: {
+          is_allow_new_interface: {
             input_type: "input-select",
-            label: "未申明是否调用",
+            label: "接受新接口",
             exts: {
               options: Labels.yesNo,
             },
           },
           is_record_field: {
             input_type: "input-select",
-            label: "是否记录字段",
+            label: "记录新字段",
             exts: {
               options: Labels.yesNo,
             },
           },
-          name: {
+          is_open_access_log: {
+            input_type: "input-select",
+            label: "访问日志",
+            exts: {
+              options: Labels.enable,
+            },
+          },
+          is_open_validate: {
+            input_type: "input-select",
+            label: "接口校验",
+            exts: {
+              options: Labels.enable,
+            },
+          },
+          is_strict_validate: {
+            input_type: "input-select",
+            label: "严格校验",
+            exts: {
+              options: Labels.enable,
+            },
+          },
+          system_name: {
             input_type: "input-text",
             label: "系统名称",
           },
@@ -96,14 +122,16 @@ export default {
         defaultEntity: copy(defaultEntity),
         viewFields: [
           "rule",
-          "alias",
-          "name",
-          "uri_prefix",
+          "system_alias",
+          "system_name",
           "sort_order",
+          "uri_prefix",
           "is_enable",
-          "is_continue",
+          "is_allow_new_interface",
           "is_record_field",
-          "is_open_log",
+          "is_open_access_log",
+          "is_open_validate",
+          "is_strict_validate",
           "description",
           "ext",
         ],
@@ -113,18 +141,20 @@ export default {
         defaultEntity: copy(defaultEntity),
         viewFields: [
           "rule",
-          "alias",
-          "name",
-          "uri_prefix",
+          "system_alias",
+          "system_name",
           "sort_order",
+          "uri_prefix",
           "is_enable",
-          "is_continue",
+          "is_allow_new_interface",
           "is_record_field",
-          "is_open_log",
+          "is_open_access_log",
+          "is_open_validate",
+          "is_strict_validate",
           "description",
           "ext",
         ],
-        textFields: ["rule", "alias"],
+        textFields: ["rule", "system_alias"],
       },
       viewDailog: {
         title: "系统详情",
@@ -151,8 +181,8 @@ export default {
     getHeaders(cb) {
       // 获取item，系统
       const promise = {
-        options: getFormOptions("program-system-manage"),
-        headers: getHeaderOptions("program-system-manage"),
+        options: getFormOptions("program-interface-system-manage"),
+        headers: getHeaderOptions("program-interface-system-manage"),
       };
       asyncAll(promise, (res) => {
         const headers = res.headers;
@@ -173,12 +203,14 @@ export default {
       });
     },
     getData(cb) {
-      ReqSystem.systemList(merge(this.query.search, this.pagination))
+      ReqInterfaces.interfaceSystemList(
+        merge(this.query.search, this.pagination)
+      )
         .then((res) => cb(res.data))
         .catch(() => {});
     },
     handleDelete(entity, successCb, failureCb) {
-      ReqSystem.systemDel(entity)
+      ReqInterfaces.interfaceSystemDel(entity)
         .then((res) => {
           successCb(res.message);
           // 刷新列表
@@ -188,17 +220,17 @@ export default {
     },
     // 保存数据,回调函数终止提交标记
     handleAdd(successCb, failureCb) {
-      const promise = ReqSystem.systemAdd(this.addDailog.entity);
+      const promise = ReqInterfaces.interfaceSystemAdd(this.addDailog.entity);
       this.addOrEditSave(promise, successCb, failureCb);
     },
     // 保存数据,回调函数终止提交标记
     handleEdit(successCb, failureCb) {
-      const promise = ReqSystem.systemEdit(this.editDailog.entity);
+      const promise = ReqInterfaces.interfaceSystemEdit(this.editDailog.entity);
       this.addOrEditSave(promise, successCb, failureCb);
     },
     // 保存单元格
     cellSave(cb, change, properties, params) {
-      ReqSystem.systemEdit(merge(change, { id: properties.id }))
+      ReqInterfaces.interfaceSystemEdit(merge(change, { id: properties.id }))
         .then(() => {
           cb(true);
           this.reloadTable();
