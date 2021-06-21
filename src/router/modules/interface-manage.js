@@ -7,7 +7,7 @@ export default [
     path: "/interface-manage",
     component: Layout,
     meta: {
-      title: "路由管理",
+      title: "接口管理",
       realPath: "/interface-manage/list",
     },
     children: [

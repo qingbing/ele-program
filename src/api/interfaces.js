@@ -11,4 +11,18 @@ export default {
   interfaceSystemEdit: (data) => Axios("/interface-system/edit", data), // 编辑系统
   interfaceSystemDel: (data) => Axios("/interface-system/del", data), // 删除系统
   interfaceSystemView: (data) => Axios("/interface-system/view", data), // 系统详情
+  // 接口分类类型
+  interfaceTypeList: (data) => Axios("/interface-type/list", data), // 查询接口分类列表
+  interfaceTypeAdd: (data) => Axios("/interface-type/add", data), // 添加接口分类
+  interfaceTypeEdit: (data) => Axios("/interface-type/edit", data), // 编辑接口分类
+  interfaceTypeDel: (data) => Axios("/interface-type/del", data), // 删除接口分类
+  interfaceTypeView: (data) => Axios("/interface-type/view", data), // 接口分类详情
+
+
+  
+  // 路由记录
+  routeRecordList: (data) => Axios("/route-record/list", data), // 路由记录列表
+  routeRecordEdit: (data) => Axios("/route-record/edit", data), // 编辑路由记录
+  routeRecordDel: (data) => Axios("/route-record/del", data), // 删除路由记录
+  routeRecordView: (data) => Axios("/route-record/view", data), // 路由记录详情
 };
