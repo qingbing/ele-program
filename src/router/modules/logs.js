@@ -8,22 +8,27 @@ export default [
     component: Layout,
     meta: {
       title: "日志管理",
-      realPath: "/logs/route-log",
+      realPath: "/logs/operate",
     },
     children: [
       {
         path: "",
-        redirect: "route-log",
-      },
-      {
-        path: "route-log",
-        component: () => import("../../views/logs/route-log.vue"),
-        meta: { title: "路由访问日志" },
+        redirect: "operate",
       },
       {
         path: "operate",
         component: () => import("../../views/logs/operate.vue"),
-        meta: { title: "操作日志" },
+        meta: { title: "操作提示日志" },
+      },
+      {
+        path: "interface-route",
+        component: () => import("../../views/logs/interface-route.vue"),
+        meta: { title: "接口路由日志" },
+      },
+      {
+        path: "interface-access",
+        component: () => import("../../views/logs/interface-access.vue"),
+        meta: { title: "接口访问日志" },
       },
     ],
   },

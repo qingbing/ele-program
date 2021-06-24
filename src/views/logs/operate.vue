@@ -2,7 +2,8 @@
 // 导入包
 import EListTable from "@/extends/list-table.vue";
 import { getHeaderOptions, getFormOptions, getOptionSystems } from "@/api/pub";
-import { merge, copy, asyncAll } from "@qingbing/helper";
+import { merge, copy, asyncAll, isArray } from "@qingbing/helper";
+import { getRangeTime } from "@/utils/moment";
 import ReqLogs from "@/api/logs";
 
 // 导入包
@@ -16,6 +17,7 @@ export default {
     return {
       query: {
         search: {
+          queryTime: getRangeTime(-7),
           system_alias: "",
           id: "",
           trace_id: "",
@@ -26,6 +28,14 @@ export default {
           message: "",
         },
         searchItems: {
+          queryTime: {
+            input_type: "date-picker",
+            label: "接口创建时间",
+            exts: {
+              type: "datetimerange",
+              clearable: false,
+            },
+          },
           system_alias: {
             input_type: "input-select",
             label: "所属系统",
@@ -78,6 +88,19 @@ export default {
         defaultEntity: {},
       },
     };
+  },
+  watch: {
+    // 查询时间监听
+    "query.search.queryTime": {
+      handler: function (val) {
+        if (!isArray(val)) {
+          val = getRangeTime(-7);
+        }
+        this.query.search.start_at = val[0];
+        this.query.search.end_at = val[1];
+      },
+      immediate: true,
+    },
   },
   methods: {
     getHeaders(cb) {

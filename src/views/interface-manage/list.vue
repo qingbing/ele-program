@@ -7,7 +7,7 @@ import {
   getOptionInterfaceSystems,
   getOptionInterfaceTypes,
 } from "@/api/pub";
-import { merge, copy, isEmpty, asyncAll } from "@qingbing/helper";
+import { merge, copy, isEmpty, asyncAll, isArray } from "@qingbing/helper";
 import { getRangeTime } from "@/utils/moment";
 import ReqInterfaces from "@/api/interfaces";
 import Labels from "@/conf/labels";
@@ -76,7 +76,7 @@ export default {
             label: "接口创建时间",
             exts: {
               type: "datetimerange",
-              // changeCallback(val) {},
+              clearable: false,
             },
           },
           id: {
@@ -221,6 +221,9 @@ export default {
     // 查询时间监听
     "query.search.queryTime": {
       handler: function (val) {
+        if (!isArray(val)) {
+          val = getRangeTime(-7);
+        }
         this.query.search.start_at = val[0];
         this.query.search.end_at = val[1];
       },

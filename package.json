@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@qingbing/element-cell-edit": "^1.0.5",
-    "@qingbing/element-form": "^1.0.19",
+    "@qingbing/element-form": "^1.0.20",
     "@qingbing/element-table": "^1.0.6",
     "@qingbing/helper": "^1.0.12",
     "@qingbing/vue-highlight": "^1.0.3",
