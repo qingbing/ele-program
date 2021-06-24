@@ -7,7 +7,14 @@ import {
   getOptionInterfaceSystems,
   getOptionInterfaceTypes,
 } from "@/api/pub";
-import { merge, copy, isEmpty, asyncAll, isArray } from "@qingbing/helper";
+import {
+  merge,
+  copy,
+  isEmpty,
+  asyncAll,
+  isArray,
+  toJson,
+} from "@qingbing/helper";
 import { getRangeTime } from "@/utils/moment";
 import ReqInterfaces from "@/api/interfaces";
 import Labels from "@/conf/labels";
@@ -233,11 +240,7 @@ export default {
   methods: {
     // 列数据渲染前可修改列数据
     beforeRender(item, idx) {
-      try {
-        item.mocking_response = JSON.parse(item.mocking_response);
-      } catch (error) {
-        item.mocking_response = null;
-      }
+      item.mocking_response = toJson(item.mocking_response);
     },
     switchEdit() {
       if (this.tableEditConfig.editable) {

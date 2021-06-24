@@ -1,7 +1,11 @@
 <script>
 // 导入包
 import EListTable from "@/extends/list-table.vue";
-import { getHeaderOptions, getFormOptions, getOptionSystems } from "@/api/pub";
+import {
+  getHeaderOptions,
+  getFormOptions,
+  getOptionInterfaceSystems,
+} from "@/api/pub";
 import { merge, copy, asyncAll } from "@qingbing/helper";
 import ReqInterfaces from "@/api/interfaces";
 
@@ -84,7 +88,7 @@ export default {
     getHeaders(cb) {
       // 获取item，系统
       const promise = {
-        systems: getOptionSystems(),
+        systems: getOptionInterfaceSystems(),
         options: getFormOptions("program-interface-type-manage"),
         headers: getHeaderOptions("program-interface-type-manage"),
       };

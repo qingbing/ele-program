@@ -18,24 +18,6 @@ export function getOptionInterfaceTypes(systemAlias) {
 }
 
 /**
- * todo delete
- * 获取系统用作选项
- */
-export function getOptionSystems() {
-  return Axios("/pub/option-interface-systems");
-}
-
-/**
- * todo delete
- * 获取系统用作选项
- */
-export function getOptionRouteTypes(systemAlias) {
-  return Axios("/pub/option-interface-types", {
-    system_alias: systemAlias,
-  });
-}
-
-/**
  * 系统清理缓存
  */
 export function clearCache() {
