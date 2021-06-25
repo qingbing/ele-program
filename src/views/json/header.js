@@ -46,7 +46,7 @@ export default {
       input_type: "view-text",
       label: "自增ID",
     },
-    header_key: {
+    key: {
       input_type: "view-text",
       label: "表头标志",
     },

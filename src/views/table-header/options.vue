@@ -18,7 +18,7 @@ export default {
     this.init(this.$route.params.key);
     const defaultEntity = {
       id: "",
-      header_key: this.$route.params.key,
+      key: this.$route.params.key,
       field: "",
       label: "",
       width: "",
@@ -174,12 +174,12 @@ export default {
         .catch(() => {});
     },
     getData(cb) {
-      ReqHeader.headerOptionList({ header_key: this.$route.params.key })
+      ReqHeader.headerOptionList({ key: this.$route.params.key })
         .then((res) => cb(res.data))
         .catch(() => {});
     },
     buttonRefresh() {
-      ReqHeader.headerOptionRefresh({ header_key: this.header.key })
+      ReqHeader.headerOptionRefresh({ key: this.header.key })
         .then(() => {
           // 刷新表格
           this.reloadTable();
@@ -212,7 +212,7 @@ export default {
     // 表格编辑的保存
     cellSave(cb, change, properties) {
       ReqHeader.headerOptionEdit(
-        merge(change, { id: properties.id, header_key: this.header.key })
+        merge(change, { id: properties.id, key: this.header.key })
       )
         .then(() => {
           cb(true);
